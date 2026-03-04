@@ -130,14 +130,13 @@ export default function Tagline() {
               </h2>
 
               <p className="text-sm sm:text-base text-gray-600 mb-8 sm:mb-10 leading-relaxed">
-                Nous accompagnons les marques, entreprises et institutions dans la conception de contenus clairs, cohérents et porteurs de sens, pensés pour valoriser leur image et renforcer leur message.
-              <br />
-                Chaque projet est développé avec rigueur, depuis la réflexion stratégique jusqu’à la réalisation finale, en alliant maîtrise technique, narration visuelle et identité forte.
-                Notre ambition est de produire des contenus audiovisuels durables, capables de marquer les esprits tout en répondant aux standards professionnels les plus élevés.
+                  Nous accompagnons les marques, entreprises et institutions dans la conception de contenus clairs, cohérents et porteurs de sens, pensés pour valoriser leur image et renforcer leur message.
+                <br />
+                  ORYX Studios est un studio audiovisuel et une agence de communication spécialisés dans la création de contenus visuels et le développement d’identités de marque fortes et cohérentes. Nous accompagnons nos clients dans la conception de stratégies créatives et la production de supports de communication adaptés à leurs objectifs.
+                <br />
+                  Inspiré par la force et l’élégance de l’oryx — symbole de résilience, de vision et de précision — ORYX Studios collabore avec entreprises, institutions, marques et artistes pour imaginer et produire des contenus à fort impact. Notre approche repose sur l’équilibre entre créativité, sens et performance.
               </p>
-              <p className="text-sm sm:text-base text-gray-600 mb-8 sm:mb-10 leading-relaxed">
-                Dans cette continuité, ORYX Studios intègre également la création de plans 3D, afin d’enrichir la narration, illustrer des concepts complexes et offrir une lecture visuelle plus immersive des projets.
-              </p>
+              
 
             </div>
           </FadeInSection>
