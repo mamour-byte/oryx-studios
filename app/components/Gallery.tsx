@@ -37,11 +37,11 @@ export default function Gallery() {
             </div>
 
             <div className="gallery-item wide">
-              <img src="https://picsum.photos/id/1045/1200/500" alt="Montage & 3D" />
+              <img src="/assets/3d.jpg" alt="Montage & 3D" />
               <div className="caption">
-                <span className="tag">PRODUCTIONS</span>
+                {/* <span className="tag">PRODUCTIONS</span>
                 <h3>Montage & 3D</h3>
-                <p>Rendu fluide et immersif</p>
+                <p>Rendu fluide et immersif</p> */}
               </div>
             </div>
           </div>

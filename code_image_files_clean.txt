@@ -1,0 +1,7 @@
+app\components\Footer.tsx
+app\components\Gallery.tsx
+app\components\Navbar.tsx
+app\components\Slider.tsx
+app\components\Teams.tsx
+app\services\films\page.tsx
+app\services\photos\page.tsx
