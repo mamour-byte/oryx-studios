@@ -45,7 +45,7 @@ export default function Navbar() {
           {/* Logo */}
           <div className="w-32 md:w-60">
             <img 
-              src="/images/logo.png" 
+              src="/images/logo.PNG" 
               alt="Logo Oryx Studios"
               className="w-full h-auto"
             />
@@ -102,7 +102,7 @@ export default function Navbar() {
               <div className="flex items-center justify-between p-4 border-b border-white/10">
                 <div className="w-24">
                   <img 
-                    src="/images/logo.png" 
+                    src="/images/logo.PNG" 
                     alt="Logo Oryx Studios"
                     className="w-full h-auto"
                   />
