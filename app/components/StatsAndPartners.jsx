@@ -194,7 +194,7 @@ export default function StatsAndPartners() {
           {/* Grille des compteurs */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16">
             <AnimatedCounter
-              value={120}
+              value={90}
               label="Projets livrés"
               delay={0}
               icon={
@@ -206,7 +206,7 @@ export default function StatsAndPartners() {
             />
 
             <AnimatedCounter
-              value={60}
+              value={200}
               label="Clients satisfaits"
               delay={0.1}
               icon={
@@ -220,7 +220,7 @@ export default function StatsAndPartners() {
             />
 
             <AnimatedCounter
-              value={8}
+              value={6}
               label="Années d'expertise"
               delay={0.2}
               icon={
@@ -232,7 +232,7 @@ export default function StatsAndPartners() {
             />
 
             <AnimatedCounter
-              value={15}
+              value={5}
               label="Partenaires actifs"
               delay={0.3}
               icon={
