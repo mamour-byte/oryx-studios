@@ -15,7 +15,7 @@ export default function Footer() {
         >
           <div className="w-32 md:w-40">
             <img 
-              src="/images/logo.png" 
+              src="/images/logo.PNG" 
               alt="Logo Oryx Studios"
               className="w-full h-auto"
             />

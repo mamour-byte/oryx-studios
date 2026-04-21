@@ -37,7 +37,7 @@ export default function Hero() {
         style={{ scale }}
         className="absolute inset-0 w-full h-full object-cover opacity-40"
       >
-        <source src="/assets/DJI_0116.mp4" type="video/mp4" />
+        <source src="/assets/DJI_0116.MP4" type="video/mp4" />
       </motion.video>
 
       {/* Overlay */}
