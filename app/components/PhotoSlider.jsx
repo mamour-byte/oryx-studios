@@ -12,6 +12,16 @@ const slides = [
   //   accent: "#7dd3fc",
   // },
   {
+    id: 1,
+    type: "image",
+    image: "/assets/slader1.jpg",
+    tag: "Oryx Studios",
+    headline: "Oryx Studios",
+    subline: "Un studios de création visuelle.",
+    detail: "Spécialisé dans le developpement d'identité de marque",
+    accent: "#7dd3fc",
+  },
+  {
     id: 2,
     type: "image",
     image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=1600&q=80",
