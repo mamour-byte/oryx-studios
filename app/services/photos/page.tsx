@@ -15,12 +15,13 @@ import PhotoSlider from "../../components/PhotoSlider";
 const albums = [
   {
     id: "event-1",
-    title: "Mariage – Dakar",
-    cover: "https://picsum.photos/id/1011/1600/1200",
+    title: "Shooting Photo",
+    cover: "../assets/1.jpg",
     photos: [
-      "https://picsum.photos/id/1011/1600/1200",
-      "https://picsum.photos/id/1015/1600/1200",
-      "https://picsum.photos/id/1025/1600/1200",
+      "../assets/1.jpg",
+      "../assets/2.jpg",
+      "../assets/3.jpg",
+      "../assets/4.jpg",
     ],
   },
   {

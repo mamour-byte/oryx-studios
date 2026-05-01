@@ -14,11 +14,11 @@ const slides = [
   {
     id: 1,
     type: "image",
-    image: "/assets/slader1.jpg",
+    image: "/assets/slider.jpeg",
     tag: "Oryx Studios",
-    headline: "Oryx Studios",
-    subline: "Un studios de création visuelle.",
-    detail: "Spécialisé dans le developpement d'identité de marque",
+    headline: "",
+    subline: "un studio audiovisuel et une agence de communication, ",
+    detail: "spécialisés dans la création visuelle et le développement d’identités de marque.",
     accent: "#7dd3fc",
   },
   {
@@ -265,7 +265,7 @@ export default function PhotoHeroSlider() {
           className="photo-slider-title text-enter text-enter-delay"
           style={{
             color: "#fff",
-            fontSize: 58,
+            fontSize: 38,
             lineHeight: 1.04,
             marginTop: 12,
             fontWeight: 700,
@@ -279,7 +279,7 @@ export default function PhotoHeroSlider() {
           className="photo-slider-copy text-enter text-enter-delay2"
           style={{
             color: "rgba(255,255,255,0.94)",
-            fontSize: 19,
+            fontSize: 14,
             lineHeight: 1.65,
             marginTop: 20,
             fontWeight: 700,
