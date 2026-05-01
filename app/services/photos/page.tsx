@@ -6,6 +6,7 @@ import { X } from "lucide-react";
 import FadeInSection from "../../animations/FadeInSection";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import PhotoSlider from "../../components/PhotoSlider";
 
 /* =====================
    DATA : ALBUMS
@@ -42,6 +43,57 @@ const albums = [
       "https://picsum.photos/id/1074/1600/1200",
     ],
   },
+  {
+    id: "event-4",
+    title: "Portraits Artistiques",
+    cover: "https://picsum.photos/id/1080/1600/1200",
+    photos: [
+      "https://picsum.photos/id/1080/1600/1200",
+      "https://picsum.photos/id/1084/1600/1200",
+      "https://picsum.photos/id/1089/1600/1200",
+    ],
+  },
+  {
+    id: "event-3",
+    title: "Événement Culturel",
+    cover: "https://picsum.photos/id/1060/1600/1200",
+    photos: [
+      "https://picsum.photos/id/1060/1600/1200",
+      "https://picsum.photos/id/1069/1600/1200",
+      "https://picsum.photos/id/1074/1600/1200",
+    ],
+  },
+  {
+    id: "event-4",
+    title: "Portraits Artistiques",
+    cover: "https://picsum.photos/id/1080/1600/1200",
+    photos: [
+      "https://picsum.photos/id/1080/1600/1200",
+      "https://picsum.photos/id/1084/1600/1200",
+      "https://picsum.photos/id/1089/1600/1200",
+    ],
+  },
+  {
+    id: "event-1",
+    title: "Mariage – Dakar",
+    cover: "https://picsum.photos/id/1011/1600/1200",
+    photos: [
+      "https://picsum.photos/id/1011/1600/1200",
+      "https://picsum.photos/id/1015/1600/1200",
+      "https://picsum.photos/id/1025/1600/1200",
+    ],
+  },
+  {
+    id: "event-2",
+    title: "Shooting Corporate",
+    cover: "https://picsum.photos/id/1035/1600/1200",
+    photos: [
+      "https://picsum.photos/id/1035/1600/1200",
+      "https://picsum.photos/id/1041/1600/1200",
+      "https://picsum.photos/id/1050/1600/1200",
+    ],
+  },
+
 ];
 
 /* =====================
@@ -75,32 +127,7 @@ export default function PhotographiePage() {
       {/* =====================
           HERO
       ===================== */}
-      <section className="relative h-[90vh] overflow-hidden">
-        <motion.img
-          initial={{ scale: 1.1 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-          src={albums[0].cover}
-          alt="Photographie"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-
-        <div className="absolute inset-0 bg-black/40" />
-
-        <div className="relative z-10 h-full flex items-center justify-center text-center px-6">
-          <FadeInSection>
-            <div className="max-w-4xl">
-              <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-                Photographie
-              </h1>
-              <p className="text-white/80 text-lg md:text-xl leading-relaxed">
-                Capturer l’instant, révéler l’émotion, sublimer chaque détail.
-                Chaque image raconte une histoire authentique.
-              </p>
-            </div>
-          </FadeInSection>
-        </div>
-      </section>
+      <PhotoSlider /> 
 
       {/* =====================
           INTRO
@@ -127,14 +154,15 @@ export default function PhotographiePage() {
       {/* =====================
           GALERIE (ALBUMS)
       ===================== */}
-      <section className="max-w-[1400px] mx-auto px-6 pb-32">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+      {/* Zone modifiée : galerie pleine largeur, sans espacement entre les albums. */}
+      <section className="w-full pb-32">
+        <div className="grid w-full grid-cols-1 gap-0 sm:grid-cols-2 md:grid-cols-4">
           {albums.map((album, i) => (
-            <FadeInSection key={album.id} delay={i * 0.05}>
+            <FadeInSection key={`${album.id}-${i}`} delay={i * 0.05}>
               <motion.div
                 whileHover={{ scale: 1.03 }}
                 transition={{ duration: 0.4 }}
-                className="relative overflow-hidden rounded-2xl shadow-xl cursor-pointer group"
+                className="relative aspect-square overflow-hidden rounded-none shadow-none cursor-pointer group"
                 onClick={() => {
                   setActiveAlbum(album);
                   setCurrentIndex(0);
@@ -143,7 +171,7 @@ export default function PhotographiePage() {
                 <img
                   src={album.cover}
                   alt={album.title}
-                  className="w-full h-[380px] object-cover"
+                  className="h-full w-full object-cover"
                 />
 
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/35 transition" />
