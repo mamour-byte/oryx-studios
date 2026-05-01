@@ -118,7 +118,7 @@ export default function Services() {
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-blue-100 mb-8 sm:mb-10 md:mb-12 max-w-2xl mx-auto px-4">
               Discutons de vos idées et créons ensemble quelque chose
-              d'exceptionnel.
+              {"d'exceptionnel."}
             </p>
             <motion.a
               href="#"
