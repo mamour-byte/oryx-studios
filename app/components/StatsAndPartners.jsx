@@ -136,17 +136,19 @@ function AnimatedCounter({ value, label, icon, delay = 0 }) {
 /* ======================
    COMPOSANT PRINCIPAL
 ====================== */
+
+// Liste des logos partenaires (ajustez les noms selon vos fichiers dans public/assets/logo/)
+const partners = [
+  { name: "Carter", logo: "/assets/logo/carter2.png" },
+  { name: "Dclic", logo: "/assets/logo/dclic.png" },
+  { name: "Mayma", logo: "/assets/logo/mayma.png" },
+  { name: "Vision", logo: "/assets/logo/vision.png" },
+  { name: "Vitesse", logo: "/assets/logo/vitesse.png" },
+  { name: "Wowa", logo: "/assets/logo/wowa.png" },
+  { name: "Wurus", logo: "/assets/logo/wurus.png" },
+];
+
 export default function StatsAndPartners() {
-  const partners = [
-    "Google",
-    "Orange",
-    "Wave",
-    "Free",
-    "Total",
-    "Canal+",
-    "Ecobank",
-    "Sonatel",
-  ];
 
   return (
     <section className="mb-10 relative bg-white pt-32 pb-32 overflow-hidden">
@@ -293,17 +295,18 @@ export default function StatsAndPartners() {
               {[...partners, ...partners, ...partners].map((partner, index) => (
                 <motion.div
                   key={index}
-                  className="text-xl md:text-2xl font-light tracking-wide text-gray-400 whitespace-nowrap cursor-pointer relative group"
-                  whileHover={{ 
-                    scale: 1.1,
-                    color: "rgb(37, 99, 235)",
-                  }}
+                  className="relative group flex flex-col items-center justify-center min-w-[100px]"
+                  whileHover={{ scale: 1.1 }}
                   transition={{ duration: 0.2 }}
                 >
-                  {partner}
-                  
+                  <img
+                    src={partner.logo}
+                    alt={partner.name}
+                    className="h-25 w-auto object-contain grayscale group-hover:grayscale-0 transition-all duration-300 drop-shadow-md"
+                    style={{ maxWidth: 160 }}
+                  />
                   {/* Soulignement au survol */}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300" />
+                  <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-blue-600 group-hover:w-3/4 transition-all duration-300" />
                 </motion.div>
               ))}
             </motion.div>
