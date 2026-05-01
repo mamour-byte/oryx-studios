@@ -43,16 +43,6 @@ const slides: Slide[] = [
     title: "PRINTS",
     slug: "/services/prints",
   },
-  {
-    img: "https://picsum.photos/id/1035/1600/900",
-    title: "MOTION DESIGN",
-    slug: "/services/motion",
-  },
-  {
-    img: "https://picsum.photos/id/1045/1600/900",
-    title: "PLAN 3D",
-    slug: "/services/plan",
-  },
 ];
 
 export default function Slider() {
