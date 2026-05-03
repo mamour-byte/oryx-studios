@@ -8,6 +8,7 @@ import Footer from "../../components/Footer";
 import Hero from "../../components/Hero";
 import FadeInSection from "../../animations/FadeInSection";
 
+
 type SourceType = "youtube" | "video";
 
 interface FilmType {
@@ -108,46 +109,7 @@ export default function FilmsPage() {
       <Navbar />
 
       {/* hero  */}
-      <section className="relative h-[60vh] sm:h-[70vh] flex items-center justify-center bg-gradient-to-br from-gray-900 via-blue-900 to-black overflow-hidden">
-        {/* Background pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px)',
-            backgroundSize: '50px 50px'
-          }}></div>
-        </div>
-
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          className="relative z-10 text-center px-4 sm:px-6 max-w-4xl mx-auto"
-        >
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="inline-flex items-center justify-center w-20 h-20 bg-blue-600/20 backdrop-blur-md rounded-2xl mb-6 border border-blue-500/30"
-          >
-            <Film size={40} className="text-blue-400" />
-          </motion.div>
-
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
-            Productions
-            <br />
-            <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              de Films et Clips vidéo
-            </span>
-          </h1>
-
-          <p className="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto">
-            Découvrez notre portfolio de clips, films, documentaires et contenus audiovisuels qui racontent des histoires captivantes.
-          </p>
-        </motion.div>
-      </section>
+      <Hero/>
 
       
 

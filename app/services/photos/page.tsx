@@ -16,7 +16,7 @@ const albums = [
   {
     id: "event-1",
     title: "Shooting Photo",
-    cover: "../assets/1.jpg",
+    cover: "../assets/3.jpg",
     photos: [
       "../assets/1.jpg",
       "../assets/2.jpg",
