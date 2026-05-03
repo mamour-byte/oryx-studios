@@ -139,7 +139,7 @@ function AnimatedCounter({ value, label, icon, delay = 0 }) {
 
 // Liste des logos partenaires (ajustez les noms selon vos fichiers dans public/assets/logo/)
 const partners = [
-  { name: "Carter", logo: "/assets/logo/carter2.png" },
+  { name: "Carter", logo: "/assets/logo/carter.png" },
   { name: "Dclic", logo: "/assets/logo/dclic.png" },
   { name: "Mayma", logo: "/assets/logo/mayma.png" },
   { name: "Vision", logo: "/assets/logo/vision.png" },
