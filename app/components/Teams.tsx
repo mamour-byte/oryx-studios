@@ -2,9 +2,9 @@ import React, { useState } from "react";
 
 const teamMembers = [
   {
-    name: "Sophie Martin",
-    role: "Directrice Créative",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop",
+    name: "Daouda Tine",
+    role: "CEO & Monteur Vidéo",
+    image: "assets/daouda.jpeg",
   },
   {
     name: "Thomas Dubois",
@@ -23,7 +23,7 @@ const teamMembers = [
   },
   {
     name: "Mamour Fall",
-    role: "Marketing Communication",
+    role: "Dev Web & Marketing Communication",
     image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop",
   },
   {
