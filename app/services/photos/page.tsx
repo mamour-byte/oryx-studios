@@ -27,21 +27,23 @@ const albums = [
   {
     id: "event-2",
     title: "Shooting Corporate",
-    cover: "https://picsum.photos/id/1035/1600/1200",
+    cover: "../assets/M3.jpg",
     photos: [
-      "https://picsum.photos/id/1035/1600/1200",
-      "https://picsum.photos/id/1041/1600/1200",
-      "https://picsum.photos/id/1050/1600/1200",
+      "../assets/M1.jpg",
+      "../assets/M2.jpg",
+      "../assets/M3.jpg",
+      "../assets/M4.jpg",
     ],
   },
   {
     id: "event-3",
-    title: "Événement Culturel",
-    cover: "https://picsum.photos/id/1060/1600/1200",
+    title: "Mariage",
+    cover: "../assets/L1.jpg",
     photos: [
-      "https://picsum.photos/id/1060/1600/1200",
-      "https://picsum.photos/id/1069/1600/1200",
-      "https://picsum.photos/id/1074/1600/1200",
+      "../assets/L1.jpg",
+      "../assets/L2.jpg",
+      "../assets/L3.jpg",
+      "../assets/L4.jpg",
     ],
   },
   {
