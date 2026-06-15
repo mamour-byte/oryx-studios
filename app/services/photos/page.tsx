@@ -16,84 +16,96 @@ const albums = [
   {
     id: "event-1",
     title: "Shooting Photo",
-    cover: "../assets/3.jpg",
+    cover: "../assets/y3.jpg",
     photos: [
-      "../assets/1.jpg",
-      "../assets/2.jpg",
-      "../assets/3.jpg",
-      "../assets/4.jpg",
+      "../assets/y1.jpg",
+      "../assets/y2.jpg",
+      "../assets/y3.jpg",
+      "../assets/y4.jpg",
     ],
   },
   {
     id: "event-2",
     title: "Shooting Corporate",
-    cover: "../assets/M3.jpg",
+    cover: "../assets/yy3.jpg",
     photos: [
-      "../assets/M1.jpg",
-      "../assets/M2.jpg",
-      "../assets/M3.jpg",
-      "../assets/M4.jpg",
+      "../assets/yy1.jpg",
+      "../assets/yy2.jpg",
+      "../assets/yy3.jpg",
+      "../assets/yy4.jpg",
+      "../assets/yy5.jpg",
     ],
   },
   {
     id: "event-3",
     title: "Mariage",
-    cover: "../assets/L1.jpg",
+    cover: "../assets/M1.jpg",
     photos: [
-      "../assets/L1.jpg",
-      "../assets/L2.jpg",
-      "../assets/L3.jpg",
-      "../assets/L4.jpg",
+      "../assets/M1.jpg",
+      "../assets/M2.jpg",
+      "../assets/M3.jpg",
+      "../assets/M4.jpg",
+      "../assets/M5.jpg",
     ],
   },
   {
     id: "event-4",
     title: "Portraits Artistiques",
-    cover: "https://picsum.photos/id/1080/1600/1200",
+    cover: "../assets/oryx2.jpg",
     photos: [
-      "https://picsum.photos/id/1080/1600/1200",
-      "https://picsum.photos/id/1084/1600/1200",
-      "https://picsum.photos/id/1089/1600/1200",
+      "../assets/oryx1.jpg",
+      "../assets/oryx2.jpg",
+      "../assets/oryx3.jpg",
+      "../assets/oryx4.jpg",
     ],
   },
   {
     id: "event-3",
     title: "Événement Culturel",
-    cover: "https://picsum.photos/id/1060/1600/1200",
+    cover: "../assets/mor1.jpg",
     photos: [
-      "https://picsum.photos/id/1060/1600/1200",
-      "https://picsum.photos/id/1069/1600/1200",
-      "https://picsum.photos/id/1074/1600/1200",
+      "../assets/mor.jpg",
+      "../assets/mor1.jpg",
+      "../assets/mor3.jpg",
     ],
   },
   {
     id: "event-4",
     title: "Portraits Artistiques",
-    cover: "https://picsum.photos/id/1080/1600/1200",
+    cover: "../assets/f1.jpg",
     photos: [
-      "https://picsum.photos/id/1080/1600/1200",
-      "https://picsum.photos/id/1084/1600/1200",
-      "https://picsum.photos/id/1089/1600/1200",
+      "../assets/f1.jpg",
+      "../assets/f2.jpg",
+      "../assets/f3.jpg",
+      "../assets/f4.jpg",
+      "../assets/f5.jpg",
+
     ],
   },
   {
-    id: "event-1",
-    title: "Mariage – Dakar",
-    cover: "https://picsum.photos/id/1011/1600/1200",
+    id: "event-4",
+    title: "Portraits Artistiques",
+    cover: "../assets/1.jpg",
     photos: [
-      "https://picsum.photos/id/1011/1600/1200",
-      "https://picsum.photos/id/1015/1600/1200",
-      "https://picsum.photos/id/1025/1600/1200",
+      "../assets/1.jpg",
+      "../assets/2.jpg",
+      "../assets/3.jpg",
+      "../assets/4.jpg",
+      "../assets/5.jpg",
+      "../assets/6.jpg",
+      "../assets/7.jpg",
+
     ],
   },
   {
-    id: "event-2",
-    title: "Shooting Corporate",
-    cover: "https://picsum.photos/id/1035/1600/1200",
+    id: "event-4",
+    title: "Portraits Artistiques",
+    cover: "../assets/h1.jpg",
     photos: [
-      "https://picsum.photos/id/1035/1600/1200",
-      "https://picsum.photos/id/1041/1600/1200",
-      "https://picsum.photos/id/1050/1600/1200",
+      "../assets/h1.jpg",
+      "../assets/h2.jpg",
+      "../assets/h3.jpg",
+
     ],
   },
 
@@ -165,7 +177,7 @@ export default function PhotographiePage() {
               <motion.div
                 whileHover={{ scale: 1.03 }}
                 transition={{ duration: 0.4 }}
-                className="relative aspect-square overflow-hidden rounded-none shadow-none cursor-pointer group"
+                className="relative aspect-[4/5] overflow-hidden rounded-none shadow-none cursor-pointer group"
                 onClick={() => {
                   setActiveAlbum(album);
                   setCurrentIndex(0);
@@ -174,7 +186,7 @@ export default function PhotographiePage() {
                 <img
                   src={album.cover}
                   alt={album.title}
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-cover bg-gray-100"
                 />
 
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/35 transition" />
