@@ -20,11 +20,11 @@ export default function Gallery() {
             </div>
 
             <div className="gallery-item vertical">
-              <img src="https://picsum.photos/id/1027/600/800" alt="Vidéo" />
+              <img src="../assets/blm.jpg" alt="Vidéo" />
               <div className="caption">
-                <span className="tag">PRODUCTIONS</span>
-                <h3>Vidéo créative</h3>
-                <p>Storytelling visuel moderne</p>
+                <span className="tag">Graphisme</span>
+                <h3>Infographie</h3>
+                <p>Affiche flyers depliables </p>
               </div>
             </div>
 
