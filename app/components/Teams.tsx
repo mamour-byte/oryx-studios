@@ -4,7 +4,7 @@ const teamMembers = [
   {
     name: "Daouda Tine",
     role: "CEO & Founder",
-    image: "assets/dave.jpg",
+    image: "assets/Dave.jpg",
   },
   {
     name: "Mor Diaw",
