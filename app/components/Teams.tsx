@@ -3,44 +3,44 @@ import React, { useState } from "react";
 const teamMembers = [
   {
     name: "Daouda Tine",
-    role: "CEO & Monteur Vidéo",
-    image: "assets/daouda.jpeg",
+    role: "CEO & Founder",
+    image: "assets/dave.jpg",
   },
   {
-    name: "Thomas Dubois",
-    role: "Réalisateur",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
+    name: "Mor Diaw",
+    role: "Photographe & Cadreur",
+    image: "assets/mordiaw.jpg",
   },
   {
     name: "Marie Laurent",
     role: "Chef Monteuse",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop",
+    image: "assets/mordiaw.jpg",
   },
   {
     name: "Lucas Bernard",
     role: "Ingénieur Son",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop",
+    image: "assets/mordiaw.jpg",
   },
   {
     name: "Mamour Fall",
     role: "Dev Web & Marketing Communication",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop",
+    image: "assets/mordiaw.jpg",
   },
   {
     name: "André Dubois",
     role: "Directeur de la Photographie",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop",
+    image: "assets/mordiaw.jpg",
   },
   {
     name: "Samuel Petit",
     role: "Stagiaire Production",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop",
+    image: "assets/mordiaw.jpg",
   },
   {
     name: "Lucas Bernard",
     role: "Ingénieur Son",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop",
-  },
+    image: "assets/mordiaw.jpg",
+  }
 ];
 
 const Team = () => {
@@ -67,11 +67,11 @@ const Team = () => {
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
               >
-                <div className="relative aspect-square overflow-hidden">
+                <div className="relative overflow-hidden aspect-[2/3]">
                   <img
                     src={member.image}
                     alt={member.name}
-                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                    className="w-full h-full object-contain transition-transform duration-700 ease-out group-hover:scale-105"
                   />
 
                   <div
