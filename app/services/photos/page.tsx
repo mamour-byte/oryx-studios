@@ -49,6 +49,24 @@ const albums = [
     ],
   },
   {
+    id: "event-27",
+    title: "Portraits Artistiques",
+    cover: "../assets/140.jpg",
+    photos: [
+      "../assets/139.jpg",
+      "../assets/140.jpg",
+      "../assets/141.jpg",
+      "../assets/143.jpg",
+      "../assets/144.jpg",
+      "../assets/145.jpg",
+      "../assets/146.jpg",
+      "../assets/147.jpg",
+      "../assets/148.jpg",
+      "../assets/149.jpg",
+
+    ],
+  },
+  {
     id: "event-4",
     title: "Portraits Artistiques",
     cover: "../assets/oryx2.jpg",
@@ -83,7 +101,7 @@ const albums = [
     ],
   },
   {
-    id: "event-4",
+    id: "event-5",
     title: "Portraits Artistiques",
     cover: "../assets/1.jpg",
     photos: [
@@ -94,20 +112,267 @@ const albums = [
       "../assets/5.jpg",
       "../assets/6.jpg",
       "../assets/7.jpg",
+      "../assets/8.jpg",
+      "../assets/9.jpg",
 
     ],
   },
   {
-    id: "event-4",
+    id: "event-6",
     title: "Portraits Artistiques",
-    cover: "../assets/h1.jpg",
+    cover: "../assets/12.jpg",
     photos: [
-      "../assets/h1.jpg",
-      "../assets/h2.jpg",
-      "../assets/h3.jpg",
+      "../assets/10.jpg",
+      "../assets/11.jpg",
+      "../assets/12.jpg",
 
     ],
   },
+  {
+    id: "event-7",
+    title: "Portraits Artistiques",
+    cover: "../assets/13.jpg",
+    photos: [
+      "../assets/13.jpg",
+      "../assets/14.jpg",
+      "../assets/15.jpg",
+      "../assets/16.jpg",
+
+    ],
+  },
+  {
+    id: "event-8",
+    title: "Portraits Artistiques",
+    cover: "../assets/18.jpg",
+    photos: [
+      "../assets/17.jpg",
+      "../assets/18.jpg",
+      "../assets/19.jpg",
+      "../assets/20.jpg",
+      "../assets/21.jpg",
+
+    ],
+  },
+  {
+    id: "event-9",
+    title: "Portraits Artistiques",
+    cover: "../assets/22.jpg",
+    photos: [
+      "../assets/22.jpg",
+      "../assets/23.jpg",
+
+    ],
+  },
+  {
+    id: "event-10",
+    title: "Portraits Artistiques",
+    cover: "../assets/25.jpg",
+    photos: [
+      "../assets/24.jpg",
+      "../assets/25.jpg",
+      "../assets/26.jpg",
+      "../assets/27.jpg",
+      "../assets/28.jpg",
+
+    ],
+  },
+  {
+    id: "event-11",
+    title: "Portraits Artistiques",
+    cover: "../assets/31.jpg",
+    photos: [
+      "../assets/29.jpg",
+      "../assets/30.jpg",
+      "../assets/31.jpg",
+      "../assets/32.jpg",
+      "../assets/33.jpg",
+
+    ],
+  },
+  {
+    id: "event-12",
+    title: "Portraits Artistiques",
+    cover: "../assets/35.jpg",
+    photos: [
+      "../assets/34.jpg",
+      "../assets/35.jpg",
+      "../assets/36.jpg",
+      "../assets/37.jpg",
+      "../assets/42.jpg",
+      "../assets/43.jpg",
+      "../assets/44.jpg",
+      "../assets/45.jpg",
+      "../assets/46.jpg",
+      "../assets/47.jpg",
+      "../assets/48.jpg",
+      "../assets/49.jpg",
+      "../assets/50.jpg",
+      "../assets/51.jpg",
+      "../assets/67.jpg",
+      "../assets/68.jpg",
+      "../assets/69.jpg",
+
+    ],
+  },
+  {
+    id: "event-13",
+    title: "Portraits Artistiques",
+    cover: "../assets/39.jpg",
+    photos: [
+      "../assets/38.jpg",
+      "../assets/39.jpg",
+      "../assets/40.jpg",
+      "../assets/41.jpg",
+
+    ],
+  },
+  {
+    id: "event-14",
+    title: "Portraits Artistiques",
+    cover: "../assets/52.jpg",
+    photos: [
+      "../assets/52.jpg",
+      "../assets/53.jpg",
+      "../assets/54.jpg",
+
+    ],
+  },
+  {
+    id: "event-16",
+    title: "Portraits Artistiques",
+    cover: "../assets/59.jpg",
+    photos: [
+      "../assets/55.jpg",
+      "../assets/56.jpg",
+      "../assets/57.jpg",
+      "../assets/58.jpg",
+      "../assets/59.jpg",
+
+    ],
+  },
+  {
+    id: "event-17",
+    title: "Portraits Artistiques",
+    cover: "../assets/60.jpg",
+    photos: [
+      "../assets/60.jpg",
+      "../assets/61.jpg",
+      "../assets/62.jpg",
+      "../assets/63.jpg",
+      "../assets/64.jpg",
+      "../assets/65.jpg",
+      "../assets/66.jpg",
+      
+
+    ],
+  },
+  {
+    id: "event-18",
+    title: "Portraits Artistiques",
+    cover: "../assets/74.jpg",
+    photos: [
+      "../assets/70.jpg",
+      "../assets/71.jpg",
+      "../assets/72.jpg",
+      "../assets/74.jpg",
+
+    ],
+  },
+  {
+    id: "event-19",
+    title: "Portraits Artistiques",
+    cover: "../assets/77.jpg",
+    photos: [
+      "../assets/75.jpg",
+      "../assets/76.jpg",
+      "../assets/77.jpg",
+      "../assets/78.jpg",
+      "../assets/79.jpg",
+      "../assets/80.jpg",
+      "../assets/90.jpg",
+      "../assets/91.jpg",
+      "../assets/92.jpg",
+
+    ],
+  },
+  {
+    id: "event-20",
+    title: "Portraits Artistiques",
+    cover: "../assets/93.jpg",
+    photos: [
+      "../assets/93.jpg",
+      "../assets/94.jpg",
+
+    ],
+  },
+  {
+    id: "event-21",
+    title: "Portraits Artistiques",
+    cover: "../assets/97.jpg",
+    photos: [
+      "../assets/95.jpg",
+      "../assets/97.jpg",
+      "../assets/98.jpg",
+
+    ],
+  },
+  {
+    id: "event-22",
+    title: "Portraits Artistiques",
+    cover: "../assets/100.jpg",
+    photos: [
+      "../assets/99.jpg",
+      "../assets/100.jpg",
+
+    ],
+  },
+  {
+    id: "event-23",
+    title: "Portraits Artistiques",
+    cover: "../assets/106.jpg",
+    photos: [
+      "../assets/106.jpg",
+      "../assets/107.jpg",
+      "../assets/108.jpg",
+      "../assets/109.jpg",
+      "../assets/110.jpg",
+      "../assets/111.jpg",
+      "../assets/112.jpg",
+      "../assets/113.jpg",
+      "../assets/114.jpg",
+
+    ],
+  },
+  {
+    id: "event-24",
+    title: "Portraits Artistiques",
+    cover: "../assets/125.jpg",
+    photos: [
+      "../assets/121.jpg",
+      "../assets/122.jpg",
+      "../assets/123.jpg",
+      "../assets/124.jpg",
+      "../assets/125.jpg",
+      "../assets/126.jpg",
+      "../assets/127.jpg",
+
+    ],
+  },
+  {
+    id: "event-26",
+    title: "Portraits Artistiques",
+    cover: "../assets/128.jpg",
+    photos: [
+      "../assets/128.jpg",
+      "../assets/129.jpg",
+      "../assets/130.jpg",
+      "../assets/131.jpg",
+      "../assets/132.jpg",
+
+    ],
+  },
+  
+  
 
 ];
 
