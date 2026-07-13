@@ -4,42 +4,42 @@ const teamMembers = [
   {
     name: "Daouda Tine",
     role: "CEO & Founder",
-    image: "assets/Dave.jpg",
+    image: "/assets/dave.jpg",
   },
   {
     name: "Mor Diaw",
     role: "Photographe & Cadreur",
-    image: "assets/mordiaw.jpg",
+    image: "/assets/mordiaw.jpg",
   },
   {
     name: "Marie Laurent",
     role: "Chef Monteuse",
-    image: "assets/mordiaw.jpg",
+    image: "/assets/mordiaw.jpg",
   },
   {
     name: "Lucas Bernard",
     role: "Ingénieur Son",
-    image: "assets/mordiaw.jpg",
+    image: "/assets/mordiaw.jpg",
   },
   {
     name: "Mamour Fall",
     role: "Dev Web & Marketing Communication",
-    image: "assets/mordiaw.jpg",
+    image: "/assets/Mamour.png",
   },
   {
     name: "André Dubois",
     role: "Directeur de la Photographie",
-    image: "assets/mordiaw.jpg",
+    image: "/assets/mordiaw.jpg",
   },
   {
     name: "Samuel Petit",
     role: "Stagiaire Production",
-    image: "assets/mordiaw.jpg",
+    image: "/assets/mordiaw.jpg",
   },
   {
     name: "Lucas Bernard",
     role: "Ingénieur Son",
-    image: "assets/mordiaw.jpg",
+    image: "/assets/mordiaw.jpg",
   }
 ];
 
@@ -67,11 +67,11 @@ const Team = () => {
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
               >
-                <div className="relative overflow-hidden aspect-[2/3]">
+                <div className="relative overflow-hidden aspect-[3/4]">
                   <img
                     src={member.image}
                     alt={member.name}
-                    className="w-full h-full object-contain transition-transform duration-700 ease-out group-hover:scale-105"
+                    className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
                   />
 
                   <div

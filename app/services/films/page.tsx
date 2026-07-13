@@ -49,30 +49,6 @@ const films: FilmType[] = [
     client: "Manel Lebou Ndoye",
     year: "2025",
   },
-  {
-    id: 3,
-    title: "Kendrick Lamar - Dilemma ft SZA",
-    category: "Clip musical",
-    duration: "1:20",
-    thumbnail: "https://img.youtube.com/vi/0kY48ON4Y4g/hqdefault.jpg",
-    videoUrl: "https://www.youtube.com/watch?v=0kY48ON4Y4g&list=RD0kY48ON4Y4g&start_radio=1",
-    sourceType: "youtube",
-    description: "Un clip cinématographique et immersif, avec une esthétique visuelle marquée pour accompagner l'univers de l'artiste.",
-    client: "Oryx Studios",
-    year: "2026",
-  },
-  {
-    id: 4,
-    title: "Asap Rocky Praise The Lord ft Skepta",
-    category: "Clip musical",
-    duration: "3:15",
-    thumbnail: "https://img.youtube.com/vi/Kbj2Zss-5GY/hqdefault.jpg",
-    videoUrl: "https://www.youtube.com/watch?v=Kbj2Zss-5GY&list=RD0kY48ON4Y4g&index=12",
-    sourceType: "youtube",
-    description: "Un clip sombre et stylisé, avec une esthétique visuelle forte pour accompagner l'univers de l'artiste.",
-    client: "Artiste : ASAP Rocky",
-    year: "2026",
-  },
 ];
 
 function getYouTubeEmbedUrl(url: string) {
