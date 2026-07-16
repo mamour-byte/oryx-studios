@@ -42,7 +42,7 @@ export default function Tagline() {
             Là où les idées {" "}
             <span className="relative inline-block">
               <span className="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 bg-clip-text text-transparent">
-                deviennent des images d’exception
+                deviennent des images .
               </span>
               <motion.span
                 initial={{ scaleX: 0 }}
