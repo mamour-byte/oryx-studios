@@ -24,9 +24,9 @@ const slides = [
   {
     id: 2,
     type: "image",
-    image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=1600&q=80",
+    image: "/assets/s1.jpg",
     tag: "Portrait",
-    headline: "Chaque regard",
+    headline: "Portrait",
     subline: "raconte une histoire.",
     detail: "Séances portraits & identité visuelle",
     accent: "#7dd3fc",
@@ -34,9 +34,9 @@ const slides = [
   {
     id: 3,
     type: "image",
-    image: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1600&q=80",
-    tag: "Événement",
-    headline: "L'instant",
+    image: "/assets/s2.jpg",
+    tag: "Produit",
+    headline: "Produit",
     subline: "figé pour l'éternité.",
     detail: "Couverture événements & cérémonies",
     accent: "#93c5fd",
@@ -44,7 +44,7 @@ const slides = [
   {
     id: 4,
     type: "image",
-    image: "https://images.unsplash.com/photo-1551854838-212c50b4c184?w=1600&q=80",
+    image: "/assets/s3.jpg",
     tag: "Corporate",
     headline: "Votre image,",
     subline: "notre expertise.",
@@ -265,7 +265,7 @@ export default function PhotoHeroSlider() {
           className="photo-slider-title text-enter text-enter-delay"
           style={{
             color: "#fff",
-            fontSize: 38,
+            fontSize: 70,
             lineHeight: 1.04,
             marginTop: 12,
             fontWeight: 700,
@@ -273,22 +273,9 @@ export default function PhotoHeroSlider() {
           }}
         >
           {slide.headline}
-          <br /> <span style={{ color: "#dbeafe" }}>{slide.subline}</span>
+          {/* <br /> <span style={{ color: "#dbeafe" }}>{slide.subline}</span> */}
         </h1>
-        <p
-          className="photo-slider-copy text-enter text-enter-delay2"
-          style={{
-            color: "rgba(255,255,255,0.94)",
-            fontSize: 14,
-            lineHeight: 1.65,
-            marginTop: 20,
-            fontWeight: 700,
-            fontFamily: "'Montserrat', sans-serif",
-            letterSpacing: "0.02em",
-          }}
-        >
-          {slide.detail}
-        </p>
+        
       </div>
 
       <div
@@ -304,7 +291,7 @@ export default function PhotoHeroSlider() {
           gap: 20,
         }}
       >
-        <div style={{ textAlign: "center" }}>
+        {/* <div style={{ textAlign: "center" }}>
           <span
             style={{
               display: "block",
@@ -329,9 +316,9 @@ export default function PhotoHeroSlider() {
           >
             {String(slides.length).padStart(2, "0")}
           </span>
-        </div>
+        </div> */}
 
-        <div style={{ display: "flex", flexDirection: "column", gap: 10, alignItems: "center" }}>
+        {/* <div style={{ display: "flex", flexDirection: "column", gap: 10, alignItems: "center" }}>
           {slides.map((_, i) => (
             <button
               key={i}
@@ -349,7 +336,7 @@ export default function PhotoHeroSlider() {
               }}
             />
           ))}
-        </div>
+        </div> */}
       </div>
 
       <div

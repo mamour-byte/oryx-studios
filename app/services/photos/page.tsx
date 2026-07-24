@@ -51,21 +51,14 @@ const albums = [
   {
     id: "event-27",
     title: "Portraits Artistiques",
-    cover: "../assets/140.jpg",
+    cover: "../assets/z1.jpg",
     photos: [
-      "../assets/139.jpg",
-      "../assets/140.jpg",
-      "../assets/141.jpg",
-      "../assets/143.jpg",
-      "../assets/144.jpg",
-      "../assets/145.jpg",
-      "../assets/146.jpg",
-      "../assets/147.jpg",
-      "../assets/148.jpg",
-      "../assets/149.jpg",
+      "../assets/z1.jpg",
+      "../assets/z2.jpg",
 
     ],
   },
+  
   {
     id: "event-4",
     title: "Portraits Artistiques",
@@ -97,6 +90,24 @@ const albums = [
       "../assets/f3.jpg",
       "../assets/f4.jpg",
       "../assets/f5.jpg",
+
+    ],
+  },
+  {
+    id: "event-8",
+    title: "Portraits Artistiques",
+    cover: "../assets/139.jpg",
+    photos: [
+      "../assets/139.jpg",
+      "../assets/140.jpg",
+      "../assets/141.jpg",
+      "../assets/143.jpg",
+      "../assets/144.jpg",
+      "../assets/145.jpg",
+      "../assets/146.jpg",
+      "../assets/147.jpg",
+      "../assets/148.jpg",
+      "../assets/149.jpg",
 
     ],
   },
@@ -139,7 +150,8 @@ const albums = [
       "../assets/16.jpg",
 
     ],
-  },
+  }
+  ,
   {
     id: "event-8",
     title: "Portraits Artistiques",
