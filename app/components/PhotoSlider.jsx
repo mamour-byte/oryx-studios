@@ -82,6 +82,16 @@ const slides = [
     detail: "Photographie corporate & branding",
     accent: "#bfdbfe",
   },
+  {
+    id: 4,
+    type: "image",
+    image: "/assets/s7.jpg",
+    tag: "Corporate",
+    headline: "Corporate",
+    subline: "notre expertise.",
+    detail: "Photographie corporate & branding",
+    accent: "#bfdbfe",
+  },
   
 
 
