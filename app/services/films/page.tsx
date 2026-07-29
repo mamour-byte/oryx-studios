@@ -1,303 +1,145 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { motion } from "framer-motion";
-import { Clock, Film, Play, Youtube } from "lucide-react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { X, Loader2 } from "lucide-react";
+import FadeInSection from "../../animations/FadeInSection";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import Hero from "../../components/Hero";
-import FadeInSection from "../../animations/FadeInSection";
-
-
-type SourceType = "youtube" | "video";
-
-interface FilmType {
-  id: number;
-  title: string;
-  category: string;
-  duration: string;
-  thumbnail: string;
-  videoUrl: string;
-  sourceType: SourceType;
-  description: string;
-  client: string;
-  year: string;
-}
-
-const films: FilmType[] = [
-  {
-    id: 1,
-    title: "Akhlou Brick - Thiompetance",
-    category: "Clip musical",
-    duration: "2:30",
-    thumbnail: "https://img.youtube.com/vi/sX9_nkfETwQ/hqdefault.jpg",
-    videoUrl: "https://www.youtube.com/watch?v=sX9_nkfETwQ",
-    sourceType: "youtube",
-    description: "Un clip énergique avec une direction visuelle rythmée, pensée pour soutenir l'identité de l'artiste.",
-    client: "Akhlou Brick",
-    year: "2024",
-  },
-  {
-    id: 2,
-    title: "Manel Lebou Ndoye - Sama Waay",
-    category: "Clip musical",
-    duration: "2:45",
-    thumbnail: "https://img.youtube.com/vi/wNsprOVGf1w/hqdefault.jpg",
-    videoUrl: "https://www.youtube.com/watch?v=wNsprOVGf1w",
-    sourceType: "youtube",
-    description: "Une production sensible et lumineuse, portée par une mise en scène simple et élégante.",
-    client: "Manel Lebou Ndoye",
-    year: "2025",
-  },
-  {
-    id: 3,
-    title: "Publicite Rara - ",
-    category: "Publicité",
-    duration: "",
-    thumbnail: "",
-    videoUrl: "/assets/rara.mov",
-    sourceType: "video",
-    description: "Une production sensible et lumineuse, portée par une mise en scène simple et élégante.",
-    client: "Rara",
-    year: "2025",
-  },
-  {
-    id: 4,
-    title: "",
-    category: "Publicité",
-    duration: "2:45",
-    thumbnail: "",
-    videoUrl: "/assets/hotel.m4v",
-    sourceType: "video",
-    description: "",
-    client: "Hotel ",
-    year: "2025",
-  },
-  {
-    id: 5,
-    title: "",
-    category: "Publicité",
-    duration: "2:45",
-    thumbnail: "",
-    videoUrl: "/assets/pub.mp4",
-    sourceType: "video",
-    description: "",
-    client: "Hotel ",
-    year: "2025",
-  },
-];
 
 function getYouTubeEmbedUrl(url: string) {
   try {
-    const parsedUrl = new URL(url);
-    let videoId = "";
-
-    if (parsedUrl.hostname.includes("youtu.be")) {
-      videoId = parsedUrl.pathname.replace("/", "");
-    } else if (parsedUrl.pathname.includes("/embed/")) {
-      videoId = parsedUrl.pathname.split("/embed/")[1]?.split("/")[0] || "";
-    } else if (parsedUrl.pathname.includes("/shorts/")) {
-      videoId = parsedUrl.pathname.split("/shorts/")[1]?.split("/")[0] || "";
-    } else {
-      videoId = parsedUrl.searchParams.get("v") || "";
-    }
-
-    return videoId ? `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1` : "";
-  } catch {
-    return "";
-  }
+    const u = new URL(url);
+    const id = u.searchParams.get("v") || u.pathname.replace("/", "");
+    return id ? `https://www.youtube.com/embed/${id}?rel=0&autoplay=1` : "";
+  } catch { return ""; }
 }
 
 export default function FilmsPage() {
-  const [selectedFilm, setSelectedFilm] = useState<FilmType>(films[0]);
+  const [albums, setAlbums] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [activeAlbum, setActiveAlbum] = useState<any | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const youtubeEmbedUrl = useMemo(() => {
-    if (selectedFilm.sourceType !== "youtube") return "";
-    return getYouTubeEmbedUrl(selectedFilm.videoUrl);
-  }, [selectedFilm]);
+  useEffect(() => {
+    fetch("/api/media")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          // Transform films into album-like structure for the grid
+          const filmAlbums = (data.films || []).map((film: any) => ({
+            id: film.id,
+            title: film.title,
+            cover: film.thumbnail,
+            videos: [{ type: film.sourceType, url: film.videoUrl }],
+          }));
+          setAlbums(filmAlbums);
+        }
+      })
+      .catch((err) => console.error(err))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const nextVideo = () => setCurrentIndex((p) => (p + 1) % activeAlbum.videos.length);
+  const prevVideo = () => setCurrentIndex((p) => (p - 1 + activeAlbum.videos.length) % activeAlbum.videos.length);
 
   return (
-    <div className="min-h-screen bg-white text-black">
+    <main className="bg-white text-gray-900">
       <Navbar />
+      <Hero />
 
-      {/* hero  */}
-      <Hero/>
+      <section className="max-w-6xl mx-auto px-6 py-24">
+        <FadeInSection>
+          <div className="text-center max-w-3xl mx-auto">
+            <span className="text-xs tracking-[0.25em] text-blue-600 font-semibold">NOS PRODUCTIONS</span>
+            <h2 className="text-3xl md:text-4xl font-light mt-6 mb-6">
+              Des films guidés par la <span className="text-blue-600">vision</span>
+            </h2>
+            <p className="text-gray-600 leading-relaxed">
+              Clips musicaux, publicités et films institutionnels. Chaque production est pensée pour raconter une histoire unique.
+            </p>
+          </div>
+        </FadeInSection>
+      </section>
 
-      
+      <section className="w-full pb-32">
+        {loading ? (
+          <div className="flex justify-center py-24">
+            <Loader2 className="animate-spin text-blue-600" size={40} />
+          </div>
+        ) : albums.length === 0 ? (
+          <p className="text-center text-gray-400 py-24">Aucune production disponible pour le moment.</p>
+        ) : (
+          <div className="grid w-full grid-cols-1 gap-0 sm:grid-cols-2 md:grid-cols-4">
+            {albums.map((album, i) => (
+              <FadeInSection key={album.id} delay={i * 0.05}>
+                <motion.div
+                  whileHover={{ scale: 1.03 }}
+                  transition={{ duration: 0.4 }}
+                  className="relative aspect-[4/5] overflow-hidden cursor-pointer group bg-gray-900"
+                  onClick={() => { setActiveAlbum(album); setCurrentIndex(0); }}
+                >
+                  {album.cover ? (
+                    <img src={album.cover} alt={album.title} className="h-full w-full object-cover" />
+                  ) : (
+                    <div className="h-full w-full flex items-center justify-center bg-gray-800">
+                      <span className="text-white/40 text-4xl">▶</span>
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/35 transition" />
+                  <div className="absolute bottom-6 left-6 right-6 text-white opacity-0 group-hover:opacity-100 transition">
+                    <p className="text-sm font-semibold tracking-wide">{album.title}</p>
+                    <span className="text-xs text-white/80">Voir la vidéo →</span>
+                  </div>
+                </motion.div>
+              </FadeInSection>
+            ))}
+          </div>
+        )}
+      </section>
 
-      {/* Zone modifiée : galerie vidéo simplifiée avec lecteur YouTube ou MP4. */}
-      <section className="bg-white py-20 sm:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <FadeInSection>
-            <div className="mb-12 max-w-3xl">
-              <span className="text-xs font-semibold uppercase tracking-[0.25em] text-blue-600">
-                Portfolio films
-              </span>
-              <h1 className="mt-5 text-3xl font-bold tracking-tight text-gray-950 sm:text-5xl">
-                Une galerie claire pour explorer nos productions.
-              </h1>
-              <p className="mt-5 text-base leading-7 text-gray-600 sm:text-lg">
-                {"Sélectionnez une réalisation : le lecteur s'adapte automatiquement aux sources YouTube et aux fichiers vidéo."}
-              </p>
-            </div>
-          </FadeInSection>
+      {/* Visualisateur vidéo */}
+      <AnimatePresence>
+        {activeAlbum && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center">
+            <button onClick={() => setActiveAlbum(null)} className="absolute top-6 right-6 w-12 h-12 rounded-full border border-white text-white flex items-center justify-center hover:bg-white hover:text-black transition">
+              <X />
+            </button>
 
-          <div className="grid gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] lg:items-start">
-            <FadeInSection delay={0.1}>
-              <div className="overflow-hidden border border-gray-200 bg-black">
-                <div className="aspect-video">
-                  {selectedFilm.sourceType === "youtube" && youtubeEmbedUrl ? (
+            <div className="w-full max-w-5xl px-4">
+              {(() => {
+                const video = activeAlbum.videos[currentIndex];
+                if (video.type === "youtube") {
+                  return (
                     <iframe
-                      key={selectedFilm.id}
-                      src={youtubeEmbedUrl}
-                      title={selectedFilm.title}
-                      className="h-full w-full"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      key={currentIndex}
+                      src={getYouTubeEmbedUrl(video.url)}
+                      className="w-full aspect-video"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
                     />
-                  ) : (
-                    <video
-                      key={selectedFilm.id}
-                      className="h-full w-full object-cover"
-                      src={selectedFilm.videoUrl}
-                      poster={selectedFilm.thumbnail}
-                      controls
-                      playsInline
-                    />
-                  )}
-                </div>
-              </div>
-
-              <motion.div
-                key={selectedFilm.id}
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.35 }}
-                className="border-x border-b border-gray-200 bg-white p-6 sm:p-8"
-              >
-                <div className="mb-4 flex flex-wrap items-center gap-3">
-                  <span className="inline-flex items-center gap-2 bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-blue-700">
-                    {selectedFilm.sourceType === "youtube" ? <Youtube size={14} /> : <Film size={14} />}
-                    {selectedFilm.category}
-                  </span>
-                  <span className="inline-flex items-center gap-2 bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-700">
-                    <Clock size={14} />
-                    {selectedFilm.duration}
-                  </span>
-                </div>
-
-                <h2 className="text-2xl font-bold text-gray-950 sm:text-3xl">
-                  {selectedFilm.title}
-                </h2>
-                <p className="mt-4 max-w-3xl text-gray-600">
-                  {selectedFilm.description}
-                </p>
-
-                <div className="mt-6 grid gap-4 border-t border-gray-200 pt-6 sm:grid-cols-2">
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.2em] text-gray-400">Client</p>
-                    <p className="mt-1 font-semibold text-gray-950">{selectedFilm.client}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.2em] text-gray-400">Année</p>
-                    <p className="mt-1 font-semibold text-gray-950">{selectedFilm.year}</p>
-                  </div>
-                </div>
-              </motion.div>
-            </FadeInSection>
-
-            <FadeInSection delay={0.2}>
-              {/* Zone modifiée : galerie alignée en deux vidéos par ligne. */}
-              <div className="grid grid-cols-2 gap-4">
-                {films.map((film) => {
-                  const isSelected = selectedFilm.id === film.id;
-
-                  return (
-                    <button
-                      key={film.id}
-                      type="button"
-                      onClick={() => setSelectedFilm(film)}
-                      className={`group overflow-hidden border text-left transition-all ${
-                        isSelected
-                          ? "border-blue-600 bg-blue-50 shadow-lg shadow-blue-900/10"
-                          : "border-gray-200 bg-white hover:border-blue-300 hover:bg-gray-50"
-                      }`}
-                    >
-                      <div className="relative aspect-video overflow-hidden bg-gray-900">
-                        <img
-                          src={film.thumbnail}
-                          alt={film.title}
-                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-blue-700">
-                            <Play size={16} fill="currentColor" />
-                          </span>
-                        </div>
-                        <div className="absolute left-2 top-2 bg-black/70 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-white">
-                          {film.sourceType === "youtube" ? "YouTube" : "MP4"}
-                        </div>
-                      </div>
-
-                      {/* <div className="p-3">
-                        <h3 className="line-clamp-2 min-h-[40px] text-sm font-bold leading-5 text-gray-950">
-                          {film.title}
-                        </h3>
-                        <div className="mt-3 flex items-center justify-between gap-2 text-xs text-gray-500">
-                          <span className="truncate">{film.category}</span>
-                          <span>{film.duration}</span>
-                        </div>
-                      </div> */}
-                    </button>
                   );
-                })}
-              </div>
-            </FadeInSection>
-          </div>
-        </div>
-      </section>
+                }
+                return (
+                  <video key={currentIndex} src={video.url} className="w-full aspect-video" controls autoPlay playsInline />
+                );
+              })()}
+              <p className="text-white/70 text-center mt-4 text-sm">{activeAlbum.title}</p>
+            </div>
 
-      <section className="bg-gradient-to-br from-gray-950 via-blue-950 to-black py-20 text-white sm:py-28">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-8 px-4 text-center sm:px-6 md:grid-cols-4">
-          {[
-            { value: "50+", label: "Films produits" },
-            { value: "30+", label: "Clients satisfaits" },
-            { value: "15", label: "Prix remportés" },
-            { value: "10+", label: "Années d'expérience" },
-          ].map((stat) => (
-            <FadeInSection key={stat.label}>
-              <div>
-                <p className="text-4xl font-bold text-blue-300 sm:text-5xl">{stat.value}</p>
-                <p className="mt-2 text-sm text-white/70">{stat.label}</p>
-              </div>
-            </FadeInSection>
-          ))}
-        </div>
-      </section>
-
-      <section className="bg-white py-24 text-center">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6">
-          <FadeInSection>
-            <Film className="mx-auto mb-6 text-blue-600" size={56} />
-            <h2 className="text-3xl font-bold text-gray-950 sm:text-5xl">
-              {"Prêt à créer votre film ?"}
-            </h2>
-            <p className="mx-auto mt-5 max-w-2xl text-lg text-gray-600">
-              {"Discutons de votre projet et donnons vie à votre vision avec une production cinématographique de qualité."}
-            </p>
-            <motion.a
-              href="/contact"
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.96 }}
-              className="mt-10 inline-flex px-10 py-4 font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-colors"
-            >
-              Démarrer un projet
-            </motion.a>
-          </FadeInSection>
-        </div>
-      </section>
+            {activeAlbum.videos.length > 1 && (
+              <>
+                <button onClick={prevVideo} className="absolute left-6 text-white text-4xl opacity-70 hover:opacity-100 transition">‹</button>
+                <button onClick={nextVideo} className="absolute right-6 text-white text-4xl opacity-70 hover:opacity-100 transition">›</button>
+                <div className="absolute bottom-6 text-white/70 text-sm">{currentIndex + 1} / {activeAlbum.videos.length}</div>
+              </>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <Footer />
-    </div>
+    </main>
   );
 }

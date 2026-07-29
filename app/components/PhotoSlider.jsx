@@ -1,108 +1,12 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 
-const slides = [
-  // {
-  //   id: 1,
-  //   type: "video",
-  //   video: "/assets/DJI_0116.MP4",
-  //   tag: "Film",
-  //   headline: "Oryx Studios",
-  //   subline: "en mouvement.",
-  //   detail: "Films, images aériennes & productions visuelles",
-  //   accent: "#7dd3fc",
-  // },
-  {
-    id: 1,
-    type: "image",
-    image: "/assets/slider.jpeg",
-    tag: "Oryx Studios",
-    headline: "",
-    subline: "un studio audiovisuel et une agence de communication, ",
-    detail: "spécialisés dans la création visuelle et le développement d’identités de marque.",
-    accent: "#7dd3fc",
-  },
-  {
-    id: 2,
-    type: "image",
-    image: "/assets/s1.jpg",
-    tag: "Shooting",
-    headline: "Shooting",
-    subline: "raconte une histoire.",
-    detail: "Séances portraits & identité visuelle",
-    accent: "#7dd3fc",
-  },
-  {
-    id: 3,
-    type: "image",
-    image: "/assets/s2.jpg",
-    tag: "Produit",
-    headline: "Produit",
-    subline: "figé pour l'éternité.",
-    detail: "Couverture événements & cérémonies",
-    accent: "#93c5fd",
-  },
-  
-  {
-    id: 5,
-    type: "image",
-    image: "/assets/s4.jpg",
-    tag: "Éditorial",
-    headline: "La lumière",
-    subline: "comme langage.",
-    detail: "Shoots éditoriaux & mode",
-    accent: "#60a5fa",
-  },
-  {
-    id: 5,
-    type: "image",
-    image: "/assets/s5.jpg",
-    tag: "Éditorial",
-    headline: "La lumière",
-    subline: "comme langage.",
-    detail: "Shoots éditoriaux & mode",
-    accent: "#60a5fa",
-  },
-  {
-    id: 5,
-    type: "image",
-    image: "/assets/s6.jpg",
-    tag: "Éditorial",
-    headline: "La lumière",
-    subline: "comme langage.",
-    detail: "Shoots éditoriaux & mode",
-    accent: "#60a5fa",
-  },
-  {
-    id: 4,
-    type: "image",
-    image: "/assets/s3.jpg",
-    tag: "Corporate",
-    headline: "Paysage",
-    subline: "notre expertise.",
-    detail: "Photographie corporate & branding",
-    accent: "#bfdbfe",
-  },
-  {
-    id: 4,
-    type: "image",
-    image: "/assets/s7.jpg",
-    tag: "Corporate",
-    headline: "Corporate",
-    subline: "notre expertise.",
-    detail: "Photographie corporate & branding",
-    accent: "#bfdbfe",
-  },
-  
-
-
-];
-
-// Zone modifiée : tempo premium conservé avec un slide assez lent.
 const DURATION = 9200;
 const TRANSITION_DURATION = 4000;
 const TEXT_REVEAL_DELAY = TRANSITION_DURATION + 180;
 
 export default function PhotoHeroSlider() {
+  const [slides, setSlides] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [current, setCurrent] = useState(0);
   const [prev, setPrev] = useState(null);
   const [animating, setAnimating] = useState(false);
@@ -110,287 +14,115 @@ export default function PhotoHeroSlider() {
   const progressRef = useRef(null);
   const startTimeRef = useRef(null);
 
+  useEffect(() => {
+    fetch("/api/media")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.slider?.length > 0) {
+          setSlides(data.slider);
+        }
+      })
+      .catch((err) => console.error("Error fetching slider:", err))
+      .finally(() => setLoading(false));
+  }, []);
+
   const goTo = useCallback((index) => {
-    if (animating || index === current) return;
+    if (animating || index === current || slides.length === 0) return;
     setPrev(current);
     setAnimating(true);
     setCurrent(index);
     setProgress(0);
     startTimeRef.current = performance.now();
-    setTimeout(() => {
-      setPrev(null);
-      setAnimating(false);
-    }, TRANSITION_DURATION);
-  }, [animating, current]);
+    setTimeout(() => { setPrev(null); setAnimating(false); }, TRANSITION_DURATION);
+  }, [animating, current, slides.length]);
 
   const next = useCallback(() => {
     goTo((current + 1) % slides.length);
-  }, [current, goTo]);
+  }, [current, goTo, slides.length]);
 
   useEffect(() => {
+    if (slides.length === 0) return;
     startTimeRef.current = performance.now();
-
     const tick = (now) => {
       const elapsed = now - startTimeRef.current;
       const p = Math.min((elapsed / DURATION) * 100, 100);
       setProgress(p);
-      if (p >= 100) {
-        next();
-        startTimeRef.current = performance.now();
-      }
+      if (p >= 100) { next(); startTimeRef.current = performance.now(); }
       progressRef.current = requestAnimationFrame(tick);
     };
-
     progressRef.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(progressRef.current);
-  }, [current, animating, next]);
+  }, [current, animating, next, slides.length]);
 
-  const slide = slides[current];
-  const prevSlide = prev !== null ? slides[prev] : null;
+  const slide = slides[current] ?? null;
+  const prevSlide = prev !== null ? slides[prev] ?? null : null;
 
-  // Zone modifiée : le slider accepte maintenant une vidéo MP4 en premier slide.
-  const renderSlideMedia = (item, isActive = false) => {
+  const renderMedia = (item, isActive = false) => {
     if (item.type === "video") {
       return (
-        <video
-          className="photo-slider-media"
-          autoPlay={isActive}
-          muted
-          loop
-          playsInline
-          preload="metadata"
-        >
+        <video className="photo-slider-media" autoPlay={isActive} muted loop playsInline preload="metadata">
           <source src={item.video} type="video/mp4" />
         </video>
       );
     }
-
     return <img src={item.image} alt={item.tag} className="photo-slider-media" />;
   };
 
+  if (loading) {
+    return (
+      <div style={{ width: "100%", height: "100vh", background: "#03143a", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ width: 40, height: 40, border: "2px solid rgba(255,255,255,0.2)", borderTopColor: "#2563eb", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      </div>
+    );
+  }
+
+  if (!slide) return null;
+
   return (
-    <section
-      style={{
-        position: "relative",
-        width: "100%",
-        height: "100vh",
-        minHeight: 600,
-        overflow: "hidden",
-        background: "#03143a",
-        fontFamily: "'Cormorant Garamond', 'Georgia', serif",
-      }}
-    >
+    <section style={{ position: "relative", width: "100%", height: "100vh", minHeight: 600, overflow: "hidden", background: "#03143a" }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap');
-
-        /* Zone modifiée : média commun aux images et à la vidéo du premier slide. */
-        .photo-slider-media {
-          position: absolute;
-          inset: 0;
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          object-position: center;
-          will-change: transform, opacity, filter;
-          animation: premiumImageScale ${DURATION}ms ease-in-out forwards;
-        }
-
-        /* Zone modifiée : la nouvelle slide arrive depuis l'extrême droite jusqu'au centre. */
-        .photo-slider-enter {
-          animation: slideInFromRight ${TRANSITION_DURATION}ms cubic-bezier(0.22,1,0.36,1) forwards;
-        }
-
-        /* Zone modifiée : l'ancienne slide quitte complètement l'écran vers l'extrême gauche. */
-        .photo-slider-exit {
-          animation: slideOutToLeft ${TRANSITION_DURATION}ms cubic-bezier(0.22,1,0.36,1) forwards;
-        }
-
-        @keyframes slideInFromRight {
-          from { transform: translateX(100%); opacity: 1; filter: blur(0); }
-          to { transform: translateX(0) scale(1); opacity: 1; filter: blur(0); }
-        }
-
-        @keyframes slideOutToLeft {
-          from { transform: translateX(0) scale(1); opacity: 1; filter: blur(0); }
-          to { transform: translateX(-100%); opacity: 1; filter: blur(0); }
-        }
-
-        @keyframes premiumImageScale {
-          from { transform: scale(1.04); }
-          to { transform: scale(1.08); }
-        }
-
-        /* Zone modifiée : le texte attend que le média soit totalement en place avant d'apparaitre. */
-        .text-enter { animation: textUp 1.15s cubic-bezier(0.16,1,0.3,1) both; }
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&display=swap');
+        .photo-slider-media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; will-change: transform; animation: premiumImageScale ${DURATION}ms ease-in-out forwards; }
+        .photo-slider-enter { animation: slideInFromRight ${TRANSITION_DURATION}ms cubic-bezier(0.22,1,0.36,1) forwards; }
+        .photo-slider-exit { animation: slideOutToLeft ${TRANSITION_DURATION}ms cubic-bezier(0.22,1,0.36,1) forwards; }
+        @keyframes slideInFromRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
+        @keyframes slideOutToLeft { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+        @keyframes premiumImageScale { from { transform: scale(1.04); } to { transform: scale(1.08); } }
         .text-enter-delay { animation: textUp 1.15s ${TEXT_REVEAL_DELAY}ms cubic-bezier(0.16,1,0.3,1) both; }
-        .text-enter-delay2 { animation: textUp 1.15s ${TEXT_REVEAL_DELAY + 180}ms cubic-bezier(0.16,1,0.3,1) both; }
-
-        @keyframes textUp {
-          from { opacity: 0; transform: translateY(34px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        .nav-dot {
-          cursor: pointer;
-          transition: all 0.8s cubic-bezier(0.16,1,0.3,1);
-        }
-
-        .nav-dot:hover {
-          transform: scale(1.35);
-          background: #dbeafe !important;
-        }
-
-        @media (max-width: 768px) {
-          .photo-slider-content {
-            left: 6% !important;
-            right: 6% !important;
-            max-width: none !important;
-          }
-
-          .photo-slider-title {
-            font-size: 42px !important;
-          }
-
-          .photo-slider-copy {
-            font-size: 16px !important;
-          }
-        }
+        @keyframes textUp { from { opacity: 0; transform: translateY(34px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 768px) { .photo-slider-content { left: 6% !important; right: 6% !important; max-width: none !important; } .photo-slider-title { font-size: 42px !important; } }
       `}</style>
 
-      
+      {/* Chevrons */}
+      {slides.length > 1 && (
+        <>
+          <button onClick={() => goTo((current - 1 + slides.length) % slides.length)} style={{ position: "absolute", left: 24, top: "50%", transform: "translateY(-50%)", zIndex: 20, background: "transparent", border: "1px solid rgba(255,255,255,0.5)", borderRadius: "50%", width: 48, height: 48, color: "#fff", fontSize: 28, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>‹</button>
+          <button onClick={() => goTo((current + 1) % slides.length)} style={{ position: "absolute", right: 24, top: "50%", transform: "translateY(-50%)", zIndex: 20, background: "transparent", border: "1px solid rgba(255,255,255,0.5)", borderRadius: "50%", width: 48, height: 48, color: "#fff", fontSize: 28, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>›</button>
+        </>
+      )}
+
       {prevSlide && (
         <div key={`exit-${prev}`} className="photo-slider-exit" style={{ position: "absolute", inset: 0 }}>
-          {renderSlideMedia(prevSlide)}
+          {renderMedia(prevSlide)}
         </div>
       )}
 
-
       <div key={`enter-${current}`} className="photo-slider-enter" style={{ position: "absolute", inset: 0 }}>
-        {renderSlideMedia(slide, true)}
+        {renderMedia(slide, true)}
       </div>
 
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          pointerEvents: "none",
-          zIndex: 2,
-          backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E\")",
-          opacity: 0.45,
-        }}
-      />
+      {slide.headline && (
+        <div className="photo-slider-content" style={{ position: "absolute", left: "7%", top: "50%", transform: "translateY(-50%)", zIndex: 10, maxWidth: "48%", textShadow: "0 18px 46px rgba(0,0,0,0.62)" }}>
+          <h1 className="photo-slider-title text-enter-delay" style={{ color: "#fff", fontSize: 70, fontFamily: "'Cormorant Garamond', serif", lineHeight: 1.04, fontWeight: 700 }}>
+            {slide.headline}
+          </h1>
+        </div>
+      )}
 
-      <div
-        className="photo-slider-content"
-        style={{
-          position: "absolute",
-          left: "7%",
-          top: "50%",
-          transform: "translateY(-50%)",
-          zIndex: 10,
-          maxWidth: "48%",
-          textShadow: "0 18px 46px rgba(0,0,0,0.62)",
-        }}
-      >
-        <h1
-          className="photo-slider-title text-enter text-enter-delay"
-          style={{
-            color: "#fff",
-            fontSize: 70,
-            // fontFamily: ,
-            lineHeight: 1.04,
-            marginTop: 12,
-            fontWeight: 700,
-            letterSpacing: 0,
-          }}
-        >
-          {slide.headline}
-          {/* <br /> <span style={{ color: "#dbeafe" }}>{slide.subline}</span> */}
-        </h1>
-        
-      </div>
-
-      <div
-        style={{
-          position: "absolute",
-          right: "5%",
-          top: "50%",
-          transform: "translateY(-50%)",
-          zIndex: 10,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 20,
-        }}
-      >
-        {/* <div style={{ textAlign: "center" }}>
-          <span
-            style={{
-              display: "block",
-              color: "#fff",
-              fontFamily: "'Cormorant Garamond', serif",
-              fontSize: 36,
-              fontWeight: 600,
-              lineHeight: 1,
-            }}
-          >
-            {String(current + 1).padStart(2, "0")}
-          </span>
-          <div style={{ width: 1, height: 24, background: "rgba(219,234,254,0.55)", margin: "6px auto" }} />
-          <span
-            style={{
-              display: "block",
-              color: "rgba(219,234,254,0.62)",
-              fontFamily: "'Cormorant Garamond', serif",
-              fontSize: 28,
-              fontWeight: 500,
-            }}
-          >
-            {String(slides.length).padStart(2, "0")}
-          </span>
-        </div> */}
-
-        {/* <div style={{ display: "flex", flexDirection: "column", gap: 10, alignItems: "center" }}>
-          {slides.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={() => goTo(i)}
-              className="nav-dot"
-              aria-label={`Afficher la slide ${i + 1}`}
-              style={{
-                width: 3,
-                height: i === current ? 32 : 14,
-                background: i === current ? slide.accent : "rgba(219,234,254,0.45)",
-                border: "none",
-                padding: 0,
-                borderRadius: 999,
-              }}
-            />
-          ))}
-        </div> */}
-      </div>
-
-      <div
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: 2,
-          background: "rgba(219,234,254,0.18)",
-          zIndex: 10,
-        }}
-      >
-        <div
-          style={{
-            height: "100%",
-            background: "linear-gradient(90deg, #2563eb, #7dd3fc)",
-            width: `${progress}%`,
-            transition: "width 0.16s linear",
-          }}
-        />
+      {/* Progress bar */}
+      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 2, background: "rgba(219,234,254,0.18)", zIndex: 10 }}>
+        <div style={{ height: "100%", background: "linear-gradient(90deg, #2563eb, #7dd3fc)", width: `${progress}%`, transition: "width 0.16s linear" }} />
       </div>
     </section>
   );

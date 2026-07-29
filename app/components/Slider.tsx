@@ -148,9 +148,9 @@ export default function Slider() {
           onClick={handlePrev}
           className="absolute left-4 top-1/2 -translate-y-1/2 z-30
                      w-12 h-12 md:w-14 md:h-14
-                     rounded-full bg-black/40 backdrop-blur
+                     rounded-full bg-transparent border border-white/50
                      text-white text-xl md:text-2xl
-                     hover:bg-black/60 transition"
+                     hover:bg-white/10 transition"
         >
           ‹
         </button>
@@ -159,9 +159,9 @@ export default function Slider() {
           onClick={handleNext}
           className="absolute right-4 top-1/2 -translate-y-1/2 z-30
                      w-12 h-12 md:w-14 md:h-14
-                     rounded-full bg-black/40 backdrop-blur
+                     rounded-full bg-transparent border border-white/50
                      text-white text-xl md:text-2xl
-                     hover:bg-black/60 transition"
+                     hover:bg-white/10 transition"
         >
           ›
         </button>

@@ -1,18 +1,13 @@
 "use client";
 import { motion } from "framer-motion";
 import FadeInSection from "../animations/FadeInSection";
-import { Camera, Video, Film, Image, PenTool, Printer  } from "lucide-react";
+import { Camera, Film, Image, PenTool, Printer, Globe } from "lucide-react";
 
 const services = [
   {
     title: "Photographie",
     description: "Capturer l'instant avec précision et émotion.",
     icon: Camera,
-  },
-  {
-    title: "Montage vidéo",
-    description: "Un storytelling fluide et impactant.",
-    icon: Video,
   },
   {
     title: "Films",
@@ -28,6 +23,11 @@ const services = [
     title: "Graphisme",
     description: "Identité visuelle claire et cohérente.",
     icon: PenTool,
+  },
+  {
+    title: "Marketing Digital & Web",
+    description: "Stratégies numériques pour une visibilité optimale.",
+    icon: Globe,
   },
   {
     title: "Prints",
