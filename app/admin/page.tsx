@@ -1092,40 +1092,35 @@ export default function AdminPage() {
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {filmSourceType === "youtube" ? (
-                      <div>
-                        <label className="block text-xs font-semibold text-gray-400 uppercase mb-2">
-                          Lien / URL YouTube
-                        </label>
-                        <input
-                          type="url"
-                          required
-                          value={filmYoutubeUrl}
-                          onChange={(e) => setFilmYoutubeUrl(e.target.value)}
-                          placeholder="https://www.youtube.com/watch?v=..."
-                          className="w-full bg-black/40 border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-blue-500"
-                        />
-                      </div>
-                    ) : (
-                      <div>
-                        <label className="block text-xs font-semibold text-gray-400 uppercase mb-2">
-                          Fichier Vidéo (MP4, MOV, M4V)
-                        </label>
-                        <input
-                          type="file"
-                          id="film-file"
-                          required
-                          accept="video/mp4,video/quicktime,video/x-m4v,video/*"
-                          onChange={(e) => setFilmFile(e.target.files?.[0] || null)}
-                          className="w-full bg-black/40 border border-gray-800 border-dashed rounded-xl px-4 py-6 text-sm text-gray-400 focus:outline-none hover:border-blue-500/50 cursor-pointer"
-                        />
-                        {filmFile && (
-                          <p className="text-[10px] text-emerald-400 mt-1">
-                            ✓ {filmFile.name} ({(filmFile.size / 1024 / 1024).toFixed(1)} Mo)
-                          </p>
-                        )}
-                      </div>
-                    )}
+                    <div className={filmSourceType === "youtube" ? "" : "hidden"}>
+                      <label className="block text-xs font-semibold text-gray-400 uppercase mb-2">
+                        Lien / URL YouTube
+                      </label>
+                      <input
+                        type="url"
+                        value={filmYoutubeUrl}
+                        onChange={(e) => setFilmYoutubeUrl(e.target.value)}
+                        placeholder="https://www.youtube.com/watch?v=..."
+                        className="w-full bg-black/40 border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-blue-500"
+                      />
+                    </div>
+                    <div className={filmSourceType === "video" ? "" : "hidden"}>
+                      <label className="block text-xs font-semibold text-gray-400 uppercase mb-2">
+                        Fichier Vidéo (MP4, MOV, M4V)
+                      </label>
+                      <input
+                        type="file"
+                        id="film-file"
+                        accept="video/mp4,video/quicktime,video/x-m4v,video/*"
+                        onChange={(e) => setFilmFile(e.target.files?.[0] || null)}
+                        className="w-full bg-black/40 border border-gray-800 border-dashed rounded-xl px-4 py-6 text-sm text-gray-400 focus:outline-none hover:border-blue-500/50 cursor-pointer"
+                      />
+                      {filmFile && (
+                        <p className="text-[10px] text-emerald-400 mt-1">
+                          ✓ {filmFile.name} ({(filmFile.size / 1024 / 1024).toFixed(1)} Mo)
+                        </p>
+                      )}
+                    </div>
 
                     <div>
                       <label className="block text-xs font-semibold text-gray-400 uppercase mb-2">
