@@ -139,14 +139,14 @@ function AnimatedCounter({ value, label, icon, delay = 0 }) {
 
 // Liste des logos partenaires (ajustez les noms selon vos fichiers dans public/assets/logo/)
 const partners = [
-  { name: "Keur gui", logo: "/assets/logo/keurgui.png" },
   { name: "Carter", logo: "/assets/logo/carter.png" },
-  { name: "Dclic", logo: "/assets/logo/dclic.png" },
   { name: "Mayma", logo: "/assets/logo/mayma.png" },
   { name: "Vision", logo: "/assets/logo/vision.png" },
   { name: "Vitesse", logo: "/assets/logo/vitesse.png" },
   { name: "Wowa", logo: "/assets/logo/wowa.png" },
   { name: "Wurus", logo: "/assets/logo/wurus.png" },
+  { name: "Keur gui", logo: "/assets/logo/keurgui.png" },
+  { name: "Dclic", logo: "/assets/logo/dclic.png" },
 ];
 
 export default function StatsAndPartners() {
