@@ -6,13 +6,19 @@ export const dynamic = "force-dynamic";
 function getYouTubeId(url: string) {
   try {
     const parsed = new URL(url);
-    if (parsed.hostname.includes("youtu.be")) {
-      return parsed.pathname.replace("/", "");
-    }
+    if (parsed.hostname.includes("youtu.be")) return parsed.pathname.replace("/", "");
     return parsed.searchParams.get("v") || "";
-  } catch {
-    return "";
-  }
+  } catch { return ""; }
+}
+
+// Inject Cloudinary transformations into a secure_url
+function optimizeUrl(url: string, width: number, quality = 75): string {
+  // Insert transformation before /upload/
+  return url.replace("/upload/", `/upload/w_${width},q_${quality},f_auto,c_fill/`);
+}
+
+function blurUrl(url: string): string {
+  return url.replace("/upload/", "/upload/w_20,q_30,f_auto,e_blur:200/");
 }
 
 export async function GET() {
@@ -45,10 +51,12 @@ export async function GET() {
 
       // 1. Process Hero Slider
       if (tags.includes("oryx-slider")) {
+        const imgUrl = item.resource_type === "image" ? item.secure_url : undefined;
         slider.push({
           id: item.public_id,
           type: item.resource_type === "video" ? "video" : "image",
-          image: item.resource_type === "image" ? item.secure_url : undefined,
+          image: imgUrl ? optimizeUrl(imgUrl, 1920, 80) : undefined,
+          blur: imgUrl ? blurUrl(imgUrl) : undefined,
           video: item.resource_type === "video" ? item.secure_url : undefined,
           tag: context.tag || "Oryx Studios",
           headline: context.headline || "",
@@ -65,21 +73,22 @@ export async function GET() {
         const sourceType = context.sourceType || (item.resource_type === "video" ? "video" : "youtube");
         const videoUrl = context.videoUrl || item.secure_url;
         
-        let thumbnail = item.secure_url;
-        if (sourceType === "youtube") {
-          const ytId = getYouTubeId(videoUrl);
-          thumbnail = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
-        } else if (item.resource_type === "video") {
-          // Replace video extension with .jpg to get a poster image from Cloudinary
-          thumbnail = item.secure_url.replace(/\.[^/.]+$/, ".jpg");
-        }
+        const thumbUrl = (() => {
+          if (sourceType === "youtube") {
+            const ytId = getYouTubeId(videoUrl);
+            return `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
+          }
+          if (item.resource_type === "video") return item.secure_url.replace(/\.[^/.]+$/, ".jpg");
+          return item.secure_url;
+        })();
 
         films.push({
           id: item.public_id,
           title: context.title || "Sans titre",
           category: context.category || "Production",
           duration: context.duration || "",
-          thumbnail,
+          thumbnail: optimizeUrl(thumbUrl, 600),
+          blur: blurUrl(thumbUrl),
           videoUrl,
           sourceType,
           description: context.description || "",
@@ -96,26 +105,28 @@ export async function GET() {
         const albumTitle = context.albumTitle || "Album sans titre";
         const isCover = context.isCover === "true" || context.isCover === true;
         const photoUrl = item.secure_url;
+        const optimizedPhoto = optimizeUrl(photoUrl, 800);
+        const coverUrl = optimizeUrl(photoUrl, 600);
 
         if (!albumsMap[albumId]) {
           albumsMap[albumId] = {
             id: albumId,
             title: albumTitle,
-            cover: photoUrl,
+            cover: coverUrl,
+            blur: blurUrl(photoUrl),
             photos: [],
             order: context.order !== undefined ? Number(context.order) : undefined,
             createdAt: item.created_at,
           };
         }
 
-        // Add to photo list if not already there
-        if (!albumsMap[albumId].photos.includes(photoUrl)) {
-          albumsMap[albumId].photos.push(photoUrl);
+        if (!albumsMap[albumId].photos.includes(optimizedPhoto)) {
+          albumsMap[albumId].photos.push(optimizedPhoto);
         }
 
-        // If explicitly marked as cover, set it
         if (isCover) {
-          albumsMap[albumId].cover = photoUrl;
+          albumsMap[albumId].cover = coverUrl;
+          albumsMap[albumId].blur = blurUrl(photoUrl);
         }
       }
     });

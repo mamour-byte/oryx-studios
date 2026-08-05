@@ -5,7 +5,7 @@ import Footer from "./components/Footer";
 import Tagline from "./components/Tagline";
 import Services from "./components/Services";
 import Gallery from "./components/Gallery";
-import Teams from "./components/Teams";
+import TeamSection from "./components/Teams";
 import StatsAndPartners from "./components/StatsAndPartners";
 import Hero from "./components/Hero";
 import PhotoSlider from "./components/PhotoSlider";
@@ -23,7 +23,8 @@ export default function Home() {
       <Tagline/>
       <Gallery/>
       <Services/>
-      <Teams />
+      {/* <Teams /> */}
+      <TeamSection/>
       <StatsAndPartners /> 
       <Footer />
     </div>

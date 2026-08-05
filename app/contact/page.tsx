@@ -203,8 +203,8 @@ export default function Contact() {
                   </div>
                   <div>
                     <h3 className="font-semibold mb-1">Email</h3>
-                    <a href="mailto:contact@studio.com" className="text-gray-600 hover:text-blue-600 transition-colors">
-                      contact@studio.com
+                    <a href="mailto:contact@oryx-studio.com" className="text-gray-600 hover:text-blue-600 transition-colors">
+                      contact@oryx-studio.com
                     </a>
                   </div>
                 </div>

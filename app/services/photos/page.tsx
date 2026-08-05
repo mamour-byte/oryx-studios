@@ -7,6 +7,7 @@ import FadeInSection from "../../animations/FadeInSection";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import PhotoSlider from "../../components/PhotoSlider";
+import LazyImage from "../../components/LazyImage";
 
 export default function PhotographiePage() {
   const [albums, setAlbums] = useState<any[]>([]);
@@ -61,7 +62,7 @@ export default function PhotographiePage() {
                   className="relative aspect-[4/5] overflow-hidden cursor-pointer group"
                   onClick={() => { setActiveAlbum(album); setCurrentIndex(0); }}
                 >
-                  <img src={album.cover} alt={album.title} className="h-full w-full object-cover bg-gray-100" />
+                  <LazyImage src={album.cover} blur={album.blur} alt={album.title} className="h-full w-full object-cover" />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/35 transition" />
                   <div className="absolute bottom-6 left-6 right-6 text-white opacity-0 group-hover:opacity-100 transition">
                     <p className="text-sm font-semibold tracking-wide">{album.title}</p>
