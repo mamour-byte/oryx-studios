@@ -40,6 +40,7 @@ export async function GET() {
       id: string;
       title: string;
       cover: string;
+      blur: string;
       photos: string[];
       order?: number;
       createdAt: string;
