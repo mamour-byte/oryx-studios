@@ -204,7 +204,7 @@ export default function Contact() {
                   <div>
                     <h3 className="font-semibold mb-1">Email</h3>
                     <a href="mailto:contact@oryx-studio.com" className="text-gray-600 hover:text-blue-600 transition-colors">
-                      contact@oryx-studio.com
+                      contact@oryx-studios.com
                     </a>
                   </div>
                 </div>
@@ -215,8 +215,8 @@ export default function Contact() {
                   </div>
                   <div>
                     <h3 className="font-semibold mb-1">Téléphone</h3>
-                    <a href="tel:+221123456789" className="text-gray-600 hover:text-blue-600 transition-colors">
-                      +221 XX XXX XX XX
+                    <a href="tel:+221755202623" className="text-gray-600 hover:text-blue-600 transition-colors">
+                      +221 75 520 26 23
                     </a>
                   </div>
                 </div>

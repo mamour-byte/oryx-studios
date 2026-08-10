@@ -20,7 +20,7 @@ export default function Gallery() {
             </div>
 
             <div className="gallery-item vertical">
-              <img src="../assets/blm.jpg" alt="Vidéo" />
+              <img src="/assets/blm.jpg" alt="Vidéo" />
               <div className="caption">
                 <span className="tag">Graphisme</span>
                 <h3>Infographie</h3>

@@ -108,9 +108,6 @@
 
 
 
-
-
-
 import React from "react";
 
 /**
@@ -124,15 +121,15 @@ import React from "react";
  */
 
 const DEFAULT_TEAM = [
-  { name: "Membre 1", img: "./assets/dave.jpg" },
-  { name: "Membre 1", img: "./assets/mordiaw.jpg" },
-  { name: "Membre 1", img: "./assets/Mamour.png" },
-  { name: "Membre 1", img: "./assets/.jpg" },
-  { name: "Membre 1", img: "./assets/.jpg" },
-  { name: "Membre 1", img: "./assets/.jpg" },
-  { name: "Membre 1", img: "./assets/.jpg" },
-  { name: "Membre 1", img: "./assets/.jpg" },
-  { name: "Membre 1", img: "./assets/.jpg" },
+  { name: "Daouda Tine", img: "/assets/dave.jpg" },
+  { name: "Mor Diaw", img: "/assets/mordiaw.jpg" },
+  { name: "Mamour Fall", img: "/assets/Mamour.png" },
+  { name: "Lucas Bernard", img: "/assets/lucas_bernard.jpg" },
+  { name: "Mamour Fall", img: "/assets/mamour_fall.jpg" },
+  { name: "André Dubois", img: "/assets/andre_dubois.jpg" },
+  { name: "Samuel Petit", img: "/assets/samuel_petit.jpg" },
+  { name: "Aissatou Ndiaye", img: "/assets/aissatou_ndiaye.jpg" },
+  { name: "Fatou Diop", img: "/assets/fatou_diop.jpg" },
 ];
 
 const DEFAULT_SKILLS = [
