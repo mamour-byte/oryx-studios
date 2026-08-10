@@ -121,7 +121,7 @@ import React from "react";
  */
 
 const DEFAULT_TEAM = [
-  { name: "Daouda Tine", img: "/assets/dave.jpg" },
+  { name: "Daouda Tine", img: "/assets/daouda.jpg" },
   { name: "Mor Diaw", img: "/assets/mordiaw.jpg" },
   { name: "Mamour Fall", img: "/assets/Mamour.jpg" },
   { name: "Ousmane Sy", img: "/assets/ousmane.jpg" },
