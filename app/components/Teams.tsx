@@ -123,7 +123,7 @@ import React from "react";
 const DEFAULT_TEAM = [
   { name: "Daouda Tine", img: "/assets/dave.jpg" },
   { name: "Mor Diaw", img: "/assets/mordiaw.jpg" },
-  { name: "Mamour Fall", img: "/assets/Mamour.png" },
+  { name: "Mamour Fall", img: "/assets/Mamour.jpg" },
   { name: "Lucas Bernard", img: "/assets/lucas_bernard.jpg" },
   { name: "Mamour Fall", img: "/assets/mamour_fall.jpg" },
   { name: "André Dubois", img: "/assets/andre_dubois.jpg" },
