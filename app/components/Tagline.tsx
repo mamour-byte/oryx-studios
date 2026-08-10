@@ -6,9 +6,10 @@ import FadeInSection from "../animations/FadeInSection";
 
 export default function Tagline() {
   const images = [
-    "https://picsum.photos/id/1018/900/1200",
-    "https://picsum.photos/id/1021/900/1200",
-    "https://picsum.photos/id/1031/900/1200",
+    "./assets/oryx-animal.jpg",
+    // "./assets/oryx3.jpg",
+    // "./assets/77.jpg",
+    // "./assets/31.jpg",
   ];
 
   const [current, setCurrent] = useState(0);
@@ -74,13 +75,13 @@ export default function Tagline() {
                 if (hoverSide === "right") nextImage();
               }}
             >
-              <div className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] cursor-pointer">
+              <div className="relative w-full max-w-[720px] aspect-[4/5] mx-auto cursor-pointer bg-slate-950">
                 <AnimatePresence mode="wait">
                   <motion.img
                     key={current}
                     src={images[current]}
                     alt="Architecture"
-                    className="absolute inset-0 w-full h-full object-cover"
+                    className="absolute inset-0 w-full h-full object-contain object-center"
                     initial={{ opacity: 0, scale: 1.04 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0 }}
@@ -129,13 +130,18 @@ export default function Tagline() {
                 <span className="text-blue-600">adopte une approche institutionnelle</span>
               </h2>
 
-              <p className="text-sm sm:text-base text-gray-600 mb-8 sm:mb-10 leading-relaxed">
-                  Nous accompagnons les marques, entreprises et institutions dans la conception de contenus clairs, cohérents et porteurs de sens, pensés pour valoriser leur image et renforcer leur message.
-                <br />
-                  ORYX Studios est un studio audiovisuel et une agence de communication spécialisés dans la création de contenus visuels et le développement d’identités de marque fortes et cohérentes. Nous accompagnons nos clients dans la conception de stratégies créatives et la production de supports de communication adaptés à leurs objectifs.
-                <br />
-                  Inspiré par la force et l’élégance de l’oryx — symbole de résilience, de vision et de précision — ORYX Studios collabore avec entreprises, institutions, marques et artistes pour imaginer et produire des contenus à fort impact. Notre approche repose sur l’équilibre entre créativité, sens et performance.
-              </p>
+              <div className="text-sm sm:text-base text-gray-600 mb-8 sm:mb-10 leading-relaxed">
+                <p >
+                    Nous accompagnons les marques, entreprises et institutions dans la conception de contenus clairs, cohérents et porteurs de sens, pensés pour valoriser leur image et renforcer leur message.
+                </p>
+                <p>
+                    ORYX Studios est un studio audiovisuel et une agence de communication spécialisés dans la création de contenus visuels et le développement d’identités de marque fortes et cohérentes. Nous accompagnons nos clients dans la conception de stratégies créatives et la production de supports de communication adaptés à leurs objectifs.
+                </p>
+                <p>
+                    Inspiré par la force et l’élégance de l’oryx — symbole de résilience, de vision et de précision — ORYX Studios collabore avec entreprises, institutions, marques et artistes pour imaginer et produire des contenus à fort impact. Notre approche repose sur l’équilibre entre créativité, sens et performance.
+                </p>
+              </div>
+
               
 
             </div>

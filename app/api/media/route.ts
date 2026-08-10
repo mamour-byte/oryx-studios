@@ -75,11 +75,26 @@ export async function GET() {
         const videoUrl = context.videoUrl || item.secure_url;
         
         const thumbUrl = (() => {
+          if (context.thumbnailUrl) {
+            return context.thumbnailUrl;
+          }
+
           if (sourceType === "youtube") {
+            if (item.resource_type === "image") {
+              return item.secure_url;
+            }
             const ytId = getYouTubeId(videoUrl);
             return `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
           }
-          if (item.resource_type === "video") return item.secure_url.replace(/\.[^/.]+$/, ".jpg");
+
+          if (item.resource_type === "image") {
+            return item.secure_url;
+          }
+
+          if (item.resource_type === "video") {
+            return item.secure_url.replace(/\.[^/.]+$/, ".jpg");
+          }
+
           return item.secure_url;
         })();
 

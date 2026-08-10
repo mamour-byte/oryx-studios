@@ -11,11 +11,11 @@ export default function Gallery() {
 
           <div className="gallery-grid">
             <div className="gallery-item large">
-              <img src="https://picsum.photos/id/1011/1200/800" alt="Photographie" />
+              <img src="/assets/FILM.jpg" alt="Photographie" />
               <div className="caption">
                 <span className="tag">PRODUCTIONS</span>
-                <h3>Photographie</h3>
-                <p>Images haute qualité & direction artistique</p>
+                <h3>Films</h3>
+                <p>Réalisation de films et direction artistique</p>
               </div>
             </div>
 
@@ -32,7 +32,7 @@ export default function Gallery() {
               <img src="https://picsum.photos/id/1035/600/500" alt="Graphisme" />
               <div className="caption">
                 <span className="tag">PRODUCTIONS</span>
-                <h3>Graphisme</h3>
+                <h3>Photographie</h3>
               </div>
             </div>
 

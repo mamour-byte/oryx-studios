@@ -28,8 +28,15 @@ export async function POST(request: Request) {
   }
 
   try {
-    const body = await request.json();
-    const { videoUrl, title, category, duration, description, client, year } = body;
+    const formData = await request.formData();
+    const videoUrl = (formData.get("videoUrl") as string) || "";
+    const title = (formData.get("title") as string) || "";
+    const category = (formData.get("category") as string) || "";
+    const duration = (formData.get("duration") as string) || "";
+    const description = (formData.get("description") as string) || "";
+    const client = (formData.get("client") as string) || "";
+    const year = (formData.get("year") as string) || new Date().getFullYear().toString();
+    const thumbnailFile = formData.get("thumbnail") as File | null;
 
     if (!videoUrl) {
       return NextResponse.json(
@@ -46,10 +53,8 @@ export async function POST(request: Request) {
       );
     }
 
-    const thumbnailUrl = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
-
-    // Upload the YouTube thumbnail directly to Cloudinary as our resource representation
-    const result = await cloudinary.uploader.upload(thumbnailUrl, {
+    let uploadSource = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
+    let uploadOptions: Record<string, any> = {
       folder: "oryx-studios/films",
       public_id: `yt_${ytId}`,
       overwrite: true,
@@ -64,7 +69,30 @@ export async function POST(request: Request) {
         sourceType: "youtube",
         videoUrl: videoUrl,
       },
-    });
+    };
+
+    if (thumbnailFile) {
+      const buffer = Buffer.from(await thumbnailFile.arrayBuffer());
+      const thumbResult: any = await new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          {
+            folder: "oryx-studios/film-thumbnails",
+            resource_type: "image",
+            tags: ["oryx-film", "oryx-film-thumbnail"],
+          },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        );
+        uploadStream.end(buffer);
+      });
+      uploadSource = thumbResult.secure_url;
+      uploadOptions.public_id = `yt_${ytId}`;
+      uploadOptions.context.thumbnailUrl = thumbResult.secure_url;
+    }
+
+    const result = await cloudinary.uploader.upload(uploadSource, uploadOptions);
 
     return NextResponse.json({
       success: true,

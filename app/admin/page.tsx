@@ -60,6 +60,7 @@ export default function AdminPage() {
   const [filmSourceType, setFilmSourceType] = useState<"youtube" | "video">("youtube");
   const [filmYoutubeUrl, setFilmYoutubeUrl] = useState("");
   const [filmFile, setFilmFile] = useState<File | null>(null);
+  const [filmThumbnailFile, setFilmThumbnailFile] = useState<File | null>(null);
   const [filmTitle, setFilmTitle] = useState("");
   const [filmCategory, setFilmCategory] = useState("Clip musical");
   const [filmDuration, setFilmDuration] = useState("");
@@ -353,19 +354,22 @@ export default function AdminPage() {
     setUploadLoading(true);
     try {
       if (filmSourceType === "youtube") {
-        // Call YouTube endpoint
+        // Call YouTube endpoint with optional thumbnail upload
+        const formData = new FormData();
+        formData.append("videoUrl", filmYoutubeUrl);
+        formData.append("title", filmTitle);
+        formData.append("category", filmCategory);
+        formData.append("duration", filmDuration);
+        formData.append("description", filmDescription);
+        formData.append("client", filmClient);
+        formData.append("year", filmYear);
+        if (filmThumbnailFile) {
+          formData.append("thumbnail", filmThumbnailFile);
+        }
+
         const res = await fetch("/api/admin/add-youtube", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            videoUrl: filmYoutubeUrl,
-            title: filmTitle,
-            category: filmCategory,
-            duration: filmDuration,
-            description: filmDescription,
-            client: filmClient,
-            year: filmYear,
-          }),
+          body: formData,
         });
         const data = await res.json();
         if (data.success) {
@@ -375,6 +379,7 @@ export default function AdminPage() {
           setFilmDuration("");
           setFilmDescription("");
           setFilmClient("");
+          setFilmThumbnailFile(null);
           fetchMedia();
         } else {
           showToast(false, data.error || "Erreur d'ajout.");
@@ -390,6 +395,9 @@ export default function AdminPage() {
         formData.append("description", filmDescription);
         formData.append("client", filmClient);
         formData.append("year", filmYear);
+        if (filmThumbnailFile) {
+          formData.append("thumbnail", filmThumbnailFile);
+        }
 
         const res = await fetch("/api/admin/upload", {
           method: "POST",
@@ -399,12 +407,15 @@ export default function AdminPage() {
         if (data.success) {
           showToast(true, "Film vidéo téléversé avec succès !");
           setFilmFile(null);
+          setFilmThumbnailFile(null);
           setFilmTitle("");
           setFilmDuration("");
           setFilmDescription("");
           setFilmClient("");
           const fileInput = document.getElementById("film-file") as HTMLInputElement;
           if (fileInput) fileInput.value = "";
+          const thumbInput = document.getElementById("film-thumbnail") as HTMLInputElement;
+          if (thumbInput) thumbInput.value = "";
           fetchMedia();
         } else {
           showToast(false, data.error || "Erreur d'upload.");
@@ -1118,6 +1129,24 @@ export default function AdminPage() {
                       {filmFile && (
                         <p className="text-[10px] text-emerald-400 mt-1">
                           ✓ {filmFile.name} ({(filmFile.size / 1024 / 1024).toFixed(1)} Mo)
+                        </p>
+                      )}
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-400 uppercase mb-2">
+                        Miniature (optionnelle)
+                      </label>
+                      <input
+                        type="file"
+                        id="film-thumbnail"
+                        accept="image/*"
+                        onChange={(e) => setFilmThumbnailFile(e.target.files?.[0] || null)}
+                        className="w-full bg-black/40 border border-gray-800 border-dashed rounded-xl px-4 py-6 text-sm text-gray-400 focus:outline-none hover:border-blue-500/50 cursor-pointer"
+                      />
+                      {filmThumbnailFile && (
+                        <p className="text-[10px] text-emerald-400 mt-1">
+                          ✓ {filmThumbnailFile.name} ({(filmThumbnailFile.size / 1024 / 1024).toFixed(1)} Mo)
                         </p>
                       )}
                     </div>

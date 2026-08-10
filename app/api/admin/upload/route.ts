@@ -72,6 +72,26 @@ export async function POST(request: Request) {
       context.client = (formData.get("client") as string) || "Client";
       context.year = (formData.get("year") as string) || new Date().getFullYear().toString();
       context.sourceType = "video";
+
+      const thumbnailFile = formData.get("thumbnail") as File | null;
+      if (thumbnailFile) {
+        const thumbBuffer = Buffer.from(await thumbnailFile.arrayBuffer());
+        const thumbResult: any = await new Promise((resolve, reject) => {
+          const uploadStream = cloudinary.uploader.upload_stream(
+            {
+              folder: "oryx-studios/film-thumbnails",
+              resource_type: "image",
+              tags: ["oryx-film", "oryx-film-thumbnail"],
+            },
+            (error, result) => {
+              if (error) reject(error);
+              else resolve(result);
+            }
+          );
+          uploadStream.end(thumbBuffer);
+        });
+        context.thumbnailUrl = thumbResult.secure_url;
+      }
     }
 
     // Convert file to arrayBuffer and node Buffer
