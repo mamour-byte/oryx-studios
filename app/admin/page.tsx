@@ -192,12 +192,22 @@ export default function AdminPage() {
   const handleSaveOrder = async (list: any[], section: "slider" | "films" | "albums") => {
     setReorderLoading(true);
     try {
-      // For slider and films: use item.id as publicId
-      // For albums: use album.id as publicId (the albumId context)
-      const items = list.map((item, idx) => ({
-        publicId: item.id,
-        order: idx,
-      }));
+      let items: { publicId: string; order: number }[];
+
+      if (section === "albums") {
+        items = [];
+        list.forEach((album, idx) => {
+          (album.photoPublicIds || []).forEach((pubId: string) => {
+            items.push({ publicId: pubId, order: idx });
+          });
+        });
+      } else {
+        items = list.map((item, idx) => ({
+          publicId: item.id,
+          order: idx,
+        }));
+      }
+
       const res = await fetch("/api/admin/reorder", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

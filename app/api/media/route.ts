@@ -42,6 +42,7 @@ export async function GET() {
       cover: string;
       blur: string;
       photos: string[];
+      photoPublicIds: string[];
       order?: number;
       createdAt: string;
     }> = {};
@@ -131,6 +132,7 @@ export async function GET() {
             cover: coverUrl,
             blur: blurUrl(photoUrl),
             photos: [],
+            photoPublicIds: [],
             order: context.order !== undefined ? Number(context.order) : undefined,
             createdAt: item.created_at,
           };
@@ -138,6 +140,7 @@ export async function GET() {
 
         if (!albumsMap[albumId].photos.includes(optimizedPhoto)) {
           albumsMap[albumId].photos.push(optimizedPhoto);
+          albumsMap[albumId].photoPublicIds.push(item.public_id);
         }
 
         if (isCover) {

@@ -36,16 +36,23 @@ export default function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulation d'envoi
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    setIsSubmitted(true);
-    setIsSubmitting(false);
-    
-    // Réinitialiser après 3 secondes
-    setTimeout(() => {
-      setIsSubmitted(false);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || "Une erreur est survenue lors de l'envoi du message.");
+      }
+
+      setIsSubmitted(true);
       setFormData({
         nom: "",
         email: "",
@@ -53,7 +60,14 @@ export default function Contact() {
         service: "",
         message: ""
       });
-    }, 3000);
+    } catch (error: any) {
+      alert(error.message || "Une erreur est survenue.");
+    } finally {
+      setIsSubmitting(false);
+      setTimeout(() => {
+        setIsSubmitted(false);
+      }, 3000);
+    }
   };
 
   return (

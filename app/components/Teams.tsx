@@ -125,7 +125,7 @@ const DEFAULT_TEAM = [
   { name: "Mor Diaw", img: "/assets/mordiaw.jpg" },
   { name: "Mamour Fall", img: "/assets/Mamour.jpg" },
   { name: "Ousmane Sy", img: "/assets/ousmane.jpg" },
-  { name: "Lucas Bernard", img: "/assets/lucas_bernard.jpg" },
+  { name: "Daouda", img: "/assets/dev2.jpg" },
   { name: "André Dubois", img: "/assets/andre_dubois.jpg" },
   { name: "Samuel Petit", img: "/assets/samuel_petit.jpg" },
   { name: "Aissatou Ndiaye", img: "/assets/aissatou_ndiaye.jpg" },
