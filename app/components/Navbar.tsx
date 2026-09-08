@@ -34,6 +34,7 @@ export default function Navbar() {
     { name: "ACCUEIL", href: "/" },
     { name: "PHOTOS", href: "/services/photos" },
     { name: "FILMS", href: "/services/films" },
+    { name: "GRAPHISME", href: "/services/graphisme" },
     { name: "SERVICES", href: "/services" },
     { name: "CONTACT", href: "/contact" },
   ];

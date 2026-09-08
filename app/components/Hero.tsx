@@ -3,6 +3,8 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
+const heroVideoUrl = process.env.NEXT_PUBLIC_HERO_VIDEO_URL || "/assets/plandrone.mp4";
+
 export default function Hero() {
   const heroRef = useRef<HTMLDivElement | null>(null);
 
@@ -34,10 +36,11 @@ export default function Hero() {
         loop
         muted
         playsInline
+        preload="metadata"
         style={{ scale }}
         className="absolute inset-0 w-full h-full object-cover opacity-40"
       >
-        <source src="/assets/plandrone.mp4" type="video/mp4" />
+        <source src={heroVideoUrl} type="video/mp4" />
       </motion.video>
 
       {/* Overlay */}

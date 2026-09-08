@@ -14,32 +14,32 @@ const SWIPE_THRESHOLD = 50;
 
 const slides: Slide[] = [
   {
-    img: "https://picsum.photos/id/1011/1600/900",
+    img: "./assets/s1.jpg",
     title: "PHOTOGRAPHIE",
     slug: "/services/photos",
   },
   {
-    img: "https://picsum.photos/id/1016/1600/900",
+    img: "./assets/s2.jpg",
     title: "MONTAGE VIDÉO",
     slug: "/services/montage",
   },
   {
-    img: "https://picsum.photos/id/1015/1600/900",
+    img: "./assets/s3.jpg",
     title: "FILMS",
     slug: "/services/films",
   },
   {
-    img: "https://picsum.photos/id/1015/1600/900",
+    img: "./assets/s5.jpg",
     title: "IMAGES DRONES",
     slug: "/services/imageaerienne",
   },
   {
-    img: "https://picsum.photos/id/1025/1600/900",
+    img: "./assets/s6.jpg",
     title: "GRAPHISME",
     slug: "/services/graphisme",
   },
   {
-    img: "https://picsum.photos/id/1062/1600/900",
+    img: "./assets/s7.jpg",
     title: "PRINTS",
     slug: "/services/prints",
   },

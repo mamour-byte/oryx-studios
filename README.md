@@ -16,6 +16,20 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+### Hero video
+
+The Hero background video is served from the URL configured in
+`NEXT_PUBLIC_HERO_VIDEO_URL`. Upload `plandrone.mp4` to Cloudinary as a video,
+then add its secure delivery URL to the environment variables used by the
+deployment, for example:
+
+```env
+NEXT_PUBLIC_HERO_VIDEO_URL=https://res.cloudinary.com/<cloud-name>/video/upload/f_auto,q_auto/<public-id>.mp4
+```
+
+When this variable is absent, local development falls back to
+`/assets/plandrone.mp4`.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
