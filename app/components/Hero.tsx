@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
-const heroVideoUrl = process.env.NEXT_PUBLIC_HERO_VIDEO_URL || "/assets/plandrone.mp4";
+const heroVideoUrl = process.env.NEXT_PUBLIC_HERO_VIDEO_URL;
 
 export default function Hero() {
   const heroRef = useRef<HTMLDivElement | null>(null);
@@ -31,17 +31,19 @@ export default function Hero() {
       className="h-screen flex items-center justify-center relative bg-blue-900 overflow-hidden"
     >
       {/* Background video */}
-      <motion.video
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="metadata"
-        style={{ scale }}
-        className="absolute inset-0 w-full h-full object-cover opacity-40"
-      >
-        <source src={heroVideoUrl} type="video/mp4" />
-      </motion.video>
+      {heroVideoUrl && (
+        <motion.video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          style={{ scale }}
+          className="absolute inset-0 w-full h-full object-cover opacity-40"
+        >
+          <source src={heroVideoUrl} type="video/mp4" />
+        </motion.video>
+      )}
 
       {/* Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30" />
