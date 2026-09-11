@@ -8,7 +8,6 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import FadeInSection from "../../animations/FadeInSection";
 import LazyImage from "../../components/LazyImage";
-import Slider from "@/app/components/Slider";
 import GraphismeHero from "../../components/GraphismeHero";
 
 /* ─── Types ─────────────────────────────────────────────── */
