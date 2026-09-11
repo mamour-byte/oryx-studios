@@ -15,7 +15,7 @@ export async function POST(request: Request) {
   try {
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
-    const section = formData.get("section") as string; // 'slider' | 'photo' | 'film'
+    const section = formData.get("section") as string; // 'slider' | 'photo' | 'film' | 'hero'
 
     if (!file) {
       return NextResponse.json(
@@ -24,15 +24,15 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!section || !["slider", "photo", "film"].includes(section)) {
+    if (!section || !["slider", "photo", "film", "hero"].includes(section)) {
       return NextResponse.json(
         { success: false, error: "Section cible invalide." },
         { status: 400 }
       );
     }
 
-    // Validate video format for films
-    if (section === "film") {
+    // Validate video format for video sections
+    if (section === "film" || section === "hero") {
       const allowedVideoTypes = ["video/mp4", "video/quicktime", "video/x-m4v", "video/mov"];
       if (!allowedVideoTypes.includes(file.type) && !file.type.startsWith("video/")) {
         return NextResponse.json(

@@ -9,6 +9,7 @@ import Footer from "../../components/Footer";
 import FadeInSection from "../../animations/FadeInSection";
 import LazyImage from "../../components/LazyImage";
 import Slider from "@/app/components/Slider";
+import GraphismeHero from "../../components/GraphismeHero";
 
 /* ─── Types ─────────────────────────────────────────────── */
 interface Photo {
@@ -65,87 +66,7 @@ export default function GraphismePage() {
       <Navbar />
 
       {/* ── HERO ─────────────────────────────────────────────── */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center bg-[#f8fafc] overflow-hidden pt-24 pb-16">
-        {/* Grain texture overlay */}
-        <div className="pointer-events-none absolute inset-0 opacity-[0.03]"
-          style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")" }} />
-
-        {/* Accent blob */}
-        <div className="pointer-events-none absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full opacity-10"
-          style={{ background: "radial-gradient(circle, #1d4ed8 0%, transparent 70%)" }} />
-
-        <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-5xl md:text-7xl font-bold tracking-tight text-gray-900 leading-[1.05]"
-          >
-            Des visuelles qui{" "}
-            <span className="relative inline-block">
-              <span className="relative z-10" style={{ color: "#1d4ed8" }}>parlent</span>
-              <motion.span
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ duration: 0.6, delay: 0.7 }}
-                className="absolute bottom-1 left-0 right-0 h-[3px] origin-left"
-                style={{ background: "#d6ad60" }}
-              />
-            </span>{" "}
-            pour vous
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="mt-6 text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed"
-          >
-            Identités visuelles, supports print & digital — nous concevons des créations graphiques qui captivent, distinguent et durent.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="mt-10 flex flex-col sm:flex-row gap-4 justify-center"
-          >
-            <a href="#gallery"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-sm font-semibold text-white transition-all hover:opacity-90 hover:scale-105"
-              style={{ background: "#1d4ed8" }}
-            >
-              Voir les réalisations <ArrowRight size={16} />
-            </a>
-            <Link href="/contact"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-sm font-semibold border border-gray-200 text-gray-700 hover:border-gray-400 transition-all hover:scale-105"
-            >
-              Demander un devis
-            </Link>
-          </motion.div>
-        </div>
-
-        {/* Floating preview images — static local assets */}
-        <div className="relative z-10 mt-16 w-full max-w-5xl mx-auto px-6 h-64 hidden md:block">
-          {[
-            { src: "/assets/Roll_Up.jpg",    rotate: "-4deg", delay: 0.6,  style: "absolute left-[2%]   top-[10px]  w-44" },
-            { src: "/assets/mockup.jpg",     rotate: "1deg",  delay: 0.75, style: "absolute left-[24%]  top-[-20px] w-52" },
-            { src: "/assets/a4mockup.jpg", rotate: "-1deg", delay: 0.9,  style: "absolute left-[50%]  top-[5px]   w-48 -translate-x-1/2" },
-            { src: "/assets/blm.jpg",        rotate: "3deg",  delay: 1.05, style: "absolute right-[22%] top-[-10px] w-48" },
-            { src: "/assets/Roll_Up 1.jpg",  rotate: "-3deg", delay: 1.2,  style: "absolute right-[1%]  top-[10px]  w-44" },
-          ].map(({ src, rotate, delay, style }, i) => (
-            <motion.div
-              key={src}
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay }}
-              className={`${style} rounded-xl overflow-hidden shadow-2xl absolute`}
-              style={{ transform: `rotate(${rotate})`, animation: `float-hero ${4 + i * 0.5}s ease-in-out infinite`, animationDelay: `${i * 0.7}s` }}
-            >
-              <img src={src} alt="" className="w-full h-48 object-cover" />
-            </motion.div>
-          ))}
-        </div>
-      </section>
+      <GraphismeHero />
 
       {/* ── GALLERY GRID ─────────────────────────────────────── */}
       <section id="gallery" className="mt-20 mb-10 sm:py-0 md:py-0 lg:py-14">

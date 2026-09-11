@@ -1,4 +1,92 @@
-import React from 'react';
+"use client";
+
+import React, { useRef, useState } from "react";
+import { motion } from "framer-motion";
+
+const heroVideoUrl = process.env.NEXT_PUBLIC_GRAPHISME_HERO_VIDEO_URL;
+
+export default function GraphismeHero() {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [videoStarted, setVideoStarted] = useState(false);
+
+  const startVideo = () => {
+    setVideoStarted(true);
+    void videoRef.current?.play();
+  };
+
+  return (
+    <section className="relative min-h-screen overflow-hidden bg-[#071b4d] text-white">
+      {heroVideoUrl && (
+        <video
+          ref={videoRef}
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          className="absolute inset-0 h-full w-full object-cover"
+          aria-label="Animation vidéo de l'identité graphique d'Oryx Studios"
+        >
+          <source src={heroVideoUrl} type="video/mp4" />
+        </video>
+      )}
+
+      <div className="absolute inset-0 bg-blue-900/70" />
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-950/80 via-blue-800/35 to-slate-950/55" />
+
+      <motion.div
+        initial={{ x: "100%" }}
+        animate={{ x: 0 }}
+        transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+        onAnimationComplete={startVideo}
+        className="relative z-10 flex min-h-screen items-center justify-center px-6 py-28"
+      >
+        <div className="w-full max-w-6xl">
+          <motion.p
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.35 }}
+            className="mb-5 text-sm font-semibold uppercase tracking-[0.28em] text-blue-200"
+          >
+            Oryx Studios / Graphisme
+          </motion.p>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.45 }}
+            className="max-w-4xl text-5xl font-semibold leading-[0.98] tracking-tight sm:text-7xl lg:text-8xl"
+          >
+            Des visuels qui parlent pour vous.
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="mt-8 max-w-xl text-base leading-relaxed text-blue-50/85 sm:text-xl"
+          >
+            Nous créons des identités visuelles fortes, des supports print et des expériences digitales qui restent en mémoire.
+          </motion.p>
+
+          {!heroVideoUrl && (
+            <p className="mt-8 text-sm text-blue-100/75">
+              Ajoutez NEXT_PUBLIC_GRAPHISME_HERO_VIDEO_URL pour afficher la vidéo Cloudinary.
+            </p>
+          )}
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: videoStarted ? 1 : 0 }}
+            transition={{ duration: 0.5 }}
+            className="mt-12 h-px w-40 bg-blue-200/70"
+            aria-hidden="true"
+          />
+        </div>
+      </motion.div>
+    </section>
+  );
+}
+
 import { cn } from '@/lib/utils'; // Assumes a 'cn' utility for classnames
 
 // Define the props for the component
