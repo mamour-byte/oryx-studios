@@ -23,7 +23,8 @@ export default function Contact() {
     "Print",
     "Graphisme",
     "Motion Design",
-    "3D"
+    "3D",
+    "Création de site & Application",
   ];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
