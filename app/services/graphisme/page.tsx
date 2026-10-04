@@ -2,19 +2,25 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Loader2, ArrowRight, Layers, Type, Palette, Monitor, Package, Megaphone } from "lucide-react";
+import { X, ArrowRight, ChevronLeft, ChevronRight, Layers, Type, Palette, Monitor, Package, Megaphone } from "lucide-react";
 import Link from "next/link";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import FadeInSection from "../../animations/FadeInSection";
-import LazyImage from "../../components/LazyImage";
 import GraphismeHero from "../../components/GraphismeHero";
 
-/* ─── Types ─────────────────────────────────────────────── */
-interface Photo {
+interface GalleryImage {
   src: string;
-  blur?: string;
+  alt: string;
+  layout?: string;
 }
+
+const GALLERY_IMAGES: GalleryImage[] = [
+  { src: "/assets/mockup.jpg", alt: "Photographie", layout: "large" },
+  { src: "/assets/Roll_Up 1.jpg", alt: "Vidéo", layout: "vertical" },
+  { src: "/assets/Roll_Up.jpg", alt: "Graphisme" },
+  { src: "/assets/carte.jpg", alt: "Montage & 3D", layout: "wide" },
+];
 
 /* ─── Services graphiques ────────────────────────────────── */
 const SERVICES = [
@@ -34,31 +40,25 @@ const STATS = [
 ];
 
 export default function GraphismePage() {
-  const [photos, setPhotos]       = useState<Photo[]>([]);
-  const [loading, setLoading]     = useState(true);
-  const [lightbox, setLightbox]   = useState<{ photos: Photo[]; index: number } | null>(null);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  const openLightbox = (index: number) => setLightboxIndex(index);
+  const closeLightbox = () => setLightboxIndex(null);
+  const prev = () => setLightboxIndex((index) => index === null ? null : (index - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length);
+  const next = () => setLightboxIndex((index) => index === null ? null : (index + 1) % GALLERY_IMAGES.length);
 
   useEffect(() => {
-    fetch("/api/media")
-      .then((r) => r.json())
-      .then((data) => {
-        const all: Photo[] = [];
-        for (const album of data.albums ?? []) {
-          const blurs: string[] = album.blurs ?? [];
-          (album.photos ?? []).forEach((src: string, i: number) => {
-            all.push({ src, blur: blurs[i] });
-          });
-        }
-        setPhotos(all);
-      })
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, []);
+    if (lightboxIndex === null) return;
 
-  const openLightbox = (index: number) => setLightbox({ photos, index });
-  const closeLightbox = () => setLightbox(null);
-  const prev = () => lightbox && setLightbox({ ...lightbox, index: (lightbox.index - 1 + lightbox.photos.length) % lightbox.photos.length });
-  const next = () => lightbox && setLightbox({ ...lightbox, index: (lightbox.index + 1) % lightbox.photos.length });
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closeLightbox();
+      if (event.key === "ArrowLeft") prev();
+      if (event.key === "ArrowRight") next();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [lightboxIndex]);
 
   return (
     <main className="min-h-screen bg-white text-gray-900 overflow-hidden">
@@ -75,40 +75,17 @@ export default function GraphismePage() {
       </h2> */}
 
           <div className="gallery-grid">
-            <div className="gallery-item large">
-              <img src="/assets/mockup.jpg" alt="Photographie" />
-              <div className="caption">
-                {/* <span className="tag">PRODUCTIONS</span>
-                <h3>Films</h3>
-                <p>Réalisation de films et direction artistique</p> */}
-              </div>
-            </div>
-
-            <div className="gallery-item vertical">
-              <img src="/assets/Roll_Up 1.jpg" alt="Vidéo" />
-              <div className="caption">
-                {/* <span className="tag">Graphisme</span>
-                <h3>Infographie</h3>
-                <p>Affiche flyers depliables </p> */}
-              </div>
-            </div>
-
-            <div className="gallery-item">
-              <img src="/assets/Roll_Up.jpg" alt="Graphisme" />
-              <div className="caption">
-                {/* <span className="tag">PRODUCTIONS</span>
-                <h3>Photographie</h3> */}
-              </div>
-            </div>
-
-            <div className="gallery-item wide">
-              <img src="/assets/carte.jpg" alt="Montage & 3D" />
-              <div className="caption">
-                {/* <span className="tag">PRODUCTIONS</span>
-                <h3>Montage & 3D</h3>
-                <p>Rendu fluide et immersif</p> */}
-              </div>
-            </div>
+            {GALLERY_IMAGES.map((image, index) => (
+              <button
+                key={image.src}
+                type="button"
+                className={`gallery-item ${image.layout ?? ""}`}
+                onClick={() => openLightbox(index)}
+                aria-label={`Agrandir l’image : ${image.alt}`}
+              >
+                <img src={image.src} alt={image.alt} />
+              </button>
+            ))}
           </div>
         </div>
 
@@ -125,6 +102,10 @@ export default function GraphismePage() {
             overflow: hidden;
             cursor: pointer;
             border-radius: 8px;
+            display: block;
+            padding: 0;
+            border: 0;
+            text-align: left;
           }
 
           .gallery-item img {
@@ -291,29 +272,34 @@ export default function GraphismePage() {
 
       {/* ── LIGHTBOX ─────────────────────────────────────────── */}
       <AnimatePresence>
-        {lightbox && (
+        {lightboxIndex !== null && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
             onClick={closeLightbox}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Galerie d’images"
           >
             <button
+              type="button"
               onClick={closeLightbox}
+              aria-label="Fermer la galerie"
               className="absolute top-6 right-6 w-11 h-11 rounded-full border border-white/30 text-white flex items-center justify-center hover:bg-white/10 transition"
             >
               <X size={18} />
             </button>
 
             <motion.img
-              key={lightbox.index}
+              key={lightboxIndex}
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.3 }}
-              src={lightbox.photos[lightbox.index].src}
-              alt=""
+              src={GALLERY_IMAGES[lightboxIndex].src}
+              alt={GALLERY_IMAGES[lightboxIndex].alt}
               className="max-w-[90vw] max-h-[85vh] object-contain select-none rounded-lg"
               onClick={(e) => e.stopPropagation()}
               drag="x"
@@ -321,13 +307,25 @@ export default function GraphismePage() {
               onDragEnd={(_, info) => { if (info.offset.x < -80) next(); if (info.offset.x > 80) prev(); }}
             />
 
-            <button onClick={(e) => { e.stopPropagation(); prev(); }}
-              className="absolute left-4 md:left-8 text-white/60 hover:text-white text-5xl transition">‹</button>
-            <button onClick={(e) => { e.stopPropagation(); next(); }}
-              className="absolute right-4 md:right-8 text-white/60 hover:text-white text-5xl transition">›</button>
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); prev(); }}
+              aria-label="Image précédente"
+              className="absolute left-4 md:left-8 w-12 h-12 rounded-full bg-black/30 text-white/80 hover:bg-black/60 hover:text-white flex items-center justify-center transition"
+            >
+              <ChevronLeft size={32} />
+            </button>
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); next(); }}
+              aria-label="Image suivante"
+              className="absolute right-4 md:right-8 w-12 h-12 rounded-full bg-black/30 text-white/80 hover:bg-black/60 hover:text-white flex items-center justify-center transition"
+            >
+              <ChevronRight size={32} />
+            </button>
 
             <div className="absolute bottom-6 text-white/40 text-xs tracking-widest">
-              {lightbox.index + 1} / {lightbox.photos.length}
+              {lightboxIndex + 1} / {GALLERY_IMAGES.length}
             </div>
           </motion.div>
         )}

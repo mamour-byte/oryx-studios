@@ -31,10 +31,12 @@ export default function AdminPage() {
   const [slider, setSlider] = useState<any[]>([]);
   const [albums, setAlbums] = useState<any[]>([]);
   const [films, setFilms] = useState<any[]>([]);
+  const [services, setServices] = useState<any[]>([]);
+  const [team, setTeam] = useState<any[]>([]);
   const [dataLoading, setDataLoading] = useState(false);
 
   // Navigation state
-  const [activeTab, setActiveTab] = useState<"slider" | "albums" | "films">("albums");
+  const [activeTab, setActiveTab] = useState<"slider" | "albums" | "films" | "services" | "team">("albums");
 
   // Forms states
   const [uploadLoading, setUploadLoading] = useState(false);
@@ -68,6 +70,16 @@ export default function AdminPage() {
   const [filmClient, setFilmClient] = useState("");
   const [filmYear, setFilmYear] = useState(new Date().getFullYear().toString());
 
+  // 4. Services form (for services slider)
+  const [serviceFile, setServiceFile] = useState<File | null>(null);
+  const [serviceTitle, setServiceTitle] = useState("");
+  const [serviceSlug, setServiceSlug] = useState("/services");
+
+  // 5. Team form
+  const [teamFile, setTeamFile] = useState<File | null>(null);
+  const [teamName, setTeamName] = useState("");
+  const [teamRole, setTeamRole] = useState("");
+
   // Check authentication status on mount
   useEffect(() => {
     checkAuth();
@@ -99,6 +111,8 @@ export default function AdminPage() {
         setSlider(data.slider || []);
         setAlbums(data.albums || []);
         setFilms(data.films || []);
+        setServices(data.services || []);
+        setTeam(data.team || []);
       }
     } catch (err) {
       console.error("Error fetching media:", err);
@@ -139,6 +153,8 @@ export default function AdminPage() {
       setSlider([]);
       setAlbums([]);
       setFilms([]);
+      setServices([]);
+      setTeam([]);
     } catch (err) {
       console.error("Logout error:", err);
     }
@@ -189,7 +205,7 @@ export default function AdminPage() {
   };
 
   // Save the current order of a list to Cloudinary
-  const handleSaveOrder = async (list: any[], section: "slider" | "films" | "albums") => {
+  const handleSaveOrder = async (list: any[], section: "slider" | "films" | "albums" | "services" | "team") => {
     setReorderLoading(true);
     try {
       let items: { publicId: string; order: number }[];
@@ -347,6 +363,78 @@ export default function AdminPage() {
       }
     } catch {
       showToast(false, "Erreur réseau.");
+    } finally {
+      setUploadLoading(false);
+    }
+  };
+
+  const handleUploadService = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!serviceFile) return showToast(false, "Veuillez sélectionner une image.");
+    if (!serviceTitle) return showToast(false, "Veuillez entrer un titre.");
+
+    setUploadLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", serviceFile);
+      formData.append("section", "service");
+      formData.append("title", serviceTitle);
+      formData.append("slug", serviceSlug);
+
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast(true, "Service ajouté avec succès !");
+        setServiceFile(null);
+        setServiceTitle("");
+        setServiceSlug("/services");
+        const fileInput = document.getElementById("service-file") as HTMLInputElement;
+        if (fileInput) fileInput.value = "";
+        fetchMedia();
+      } else {
+        showToast(false, data.error || "Erreur d'upload.");
+      }
+    } catch {
+      showToast(false, "Une erreur réseau est survenue.");
+    } finally {
+      setUploadLoading(false);
+    }
+  };
+
+  const handleUploadTeam = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!teamFile) return showToast(false, "Veuillez sélectionner une photo.");
+    if (!teamName) return showToast(false, "Veuillez entrer un nom.");
+
+    setUploadLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", teamFile);
+      formData.append("section", "team");
+      formData.append("name", teamName);
+      formData.append("role", teamRole);
+
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast(true, "Membre ajouté avec succès !");
+        setTeamFile(null);
+        setTeamName("");
+        setTeamRole("");
+        const fileInput = document.getElementById("team-file") as HTMLInputElement;
+        if (fileInput) fileInput.value = "";
+        fetchMedia();
+      } else {
+        showToast(false, data.error || "Erreur d'upload.");
+      }
+    } catch {
+      showToast(false, "Une erreur réseau est survenue.");
     } finally {
       setUploadLoading(false);
     }
@@ -601,6 +689,26 @@ export default function AdminPage() {
             >
               <Film size={18} /> Portfolio Films
             </button>
+            <button
+              onClick={() => setActiveTab("services")}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
+                activeTab === "services"
+                  ? "bg-blue-600 text-white shadow-lg shadow-blue-600/10"
+                  : "text-gray-400 hover:text-white hover:bg-gray-900/50"
+              }`}
+            >
+              <Sparkles size={18} /> Services (Slider)
+            </button>
+            <button
+              onClick={() => setActiveTab("team")}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
+                activeTab === "team"
+                  ? "bg-blue-600 text-white shadow-lg shadow-blue-600/10"
+                  : "text-gray-400 hover:text-white hover:bg-gray-900/50"
+              }`}
+            >
+              <ImageIcon size={18} /> Équipe
+            </button>
           </div>
 
           {/* Quick status */}
@@ -619,6 +727,14 @@ export default function AdminPage() {
             <div className="flex justify-between">
               <span>Vidéos / Films :</span>
               <span className="font-semibold text-white">{films.length}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Services :</span>
+              <span className="font-semibold text-white">{services.length}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Équipe :</span>
+              <span className="font-semibold text-white">{team.length}</span>
             </div>
           </div>
         </aside>
@@ -1348,6 +1464,271 @@ export default function AdminPage() {
               </div>
             </div>
           )}
+
+          {/* TAB 4: SERVICES */}
+          {activeTab === "services" && (
+            <div className="space-y-8">
+              <div className="bg-gray-950/40 border border-gray-900 p-6 rounded-2xl space-y-6">
+                <div>
+                  <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                    <Plus className="text-blue-400" size={20} /> Ajouter un Service (Slider Page Services)
+                  </h2>
+                  <p className="text-gray-400 text-xs mt-1">
+                    Ajoutez une image, un titre et le lien de redirection pour la section Services.
+                  </p>
+                </div>
+
+                <form onSubmit={handleUploadService} className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-400 uppercase mb-2">
+                        Image du Service
+                      </label>
+                      <input
+                        type="file"
+                        id="service-file"
+                        required
+                        accept="image/*"
+                        onChange={(e) => setServiceFile(e.target.files?.[0] || null)}
+                        className="w-full bg-black/40 border border-gray-800 rounded-xl px-4 py-2 text-sm text-gray-300 focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-400 uppercase mb-2">
+                        Titre du Service
+                      </label>
+                      <input
+                        type="text"
+                        value={serviceTitle}
+                        onChange={(e) => setServiceTitle(e.target.value)}
+                        placeholder="Ex: PHOTOGRAPHIE"
+                        className="w-full bg-black/40 border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-400 uppercase mb-2">
+                        Lien de Redirection (slug)
+                      </label>
+                      <input
+                        type="text"
+                        value={serviceSlug}
+                        onChange={(e) => setServiceSlug(e.target.value)}
+                        placeholder="/services/photos"
+                        className="w-full bg-black/40 border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-blue-500"
+                      />
+                    </div>
+                  </div>
+                  <button
+                    type="submit"
+                    disabled={uploadLoading}
+                    className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-700 text-white px-6 py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-blue-600/10 transition"
+                  >
+                    {uploadLoading ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
+                    Ajouter le Service
+                  </button>
+                </form>
+              </div>
+
+              <div className="bg-gray-950/40 border border-gray-900 p-6 rounded-2xl space-y-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-bold text-white uppercase tracking-wider">Services ({services.length})</h3>
+                  {services.length > 1 && (
+                    <button
+                      onClick={() => handleSaveOrder(services, "services")}
+                      disabled={reorderLoading}
+                      className="flex items-center gap-1.5 bg-emerald-600/20 hover:bg-emerald-600/40 border border-emerald-600/30 text-emerald-400 px-3 py-1.5 rounded-lg text-xs font-semibold transition"
+                    >
+                      {reorderLoading ? <Loader2 size={12} className="animate-spin" /> : <Save size={12} />}
+                      Sauvegarder l'ordre
+                    </button>
+                  )}
+                </div>
+                {dataLoading ? (
+                  <div className="flex justify-center py-12">
+                    <Loader2 className="animate-spin text-blue-500" size={32} />
+                  </div>
+                ) : services.length === 0 ? (
+                  <div className="text-center py-12 bg-gray-950/20 border border-gray-900 rounded-2xl text-gray-500 text-sm">
+                    Aucun service configuré.
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-3">
+                    {services.map((s, idx) => (
+                      <div
+                        key={s.id}
+                        className="bg-gray-950/30 border border-gray-900 rounded-2xl overflow-hidden flex items-center gap-4 p-2 group"
+                      >
+                        <div className="flex flex-col gap-1 flex-shrink-0">
+                          <button
+                            onClick={() => setServices((prev) => handleMoveItem(prev, s.id, "up"))}
+                            disabled={idx === 0}
+                            className="p-1 rounded-lg bg-gray-800/60 hover:bg-blue-700/60 disabled:opacity-20 text-white transition"
+                          >
+                            <ChevronUp size={14} />
+                          </button>
+                          <GripVertical size={14} className="text-gray-600 mx-auto" />
+                          <button
+                            onClick={() => setServices((prev) => handleMoveItem(prev, s.id, "down"))}
+                            disabled={idx === services.length - 1}
+                            className="p-1 rounded-lg bg-gray-800/60 hover:bg-blue-700/60 disabled:opacity-20 text-white transition"
+                          >
+                            <ChevronDown size={14} />
+                          </button>
+                        </div>
+                        <span className="text-xs font-bold text-gray-500 w-5 text-center flex-shrink-0">{idx + 1}</span>
+                        <div className="w-20 h-14 flex-shrink-0 rounded-lg overflow-hidden bg-black">
+                          <img src={s.image || s.img} alt={s.title} className="w-full h-full object-cover" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-bold text-white text-sm truncate">{s.title}</h4>
+                          <p className="text-xs text-gray-400 truncate">{s.slug}</p>
+                        </div>
+                        <button
+                          onClick={() => handleDelete(s.id, "image")}
+                          className="flex-shrink-0 bg-red-600/80 hover:bg-red-600 p-2 rounded-lg text-white transition shadow-lg"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* TAB 5: TEAM */}
+          {activeTab === "team" && (
+            <div className="space-y-8">
+              <div className="bg-gray-950/40 border border-gray-900 p-6 rounded-2xl space-y-6">
+                <div>
+                  <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                    <Plus className="text-blue-400" size={20} /> Ajouter un Membre de l'Équipe
+                  </h2>
+                  <p className="text-gray-400 text-xs mt-1">
+                    Ajoutez le nom, le rôle/titre et la photo de chaque personne.
+                  </p>
+                </div>
+
+                <form onSubmit={handleUploadTeam} className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-400 uppercase mb-2">
+                        Photo
+                      </label>
+                      <input
+                        type="file"
+                        id="team-file"
+                        required
+                        accept="image/*"
+                        onChange={(e) => setTeamFile(e.target.files?.[0] || null)}
+                        className="w-full bg-black/40 border border-gray-800 rounded-xl px-4 py-2 text-sm text-gray-300 focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-400 uppercase mb-2">
+                        Nom
+                      </label>
+                      <input
+                        type="text"
+                        value={teamName}
+                        onChange={(e) => setTeamName(e.target.value)}
+                        placeholder="Ex: Daouda Tine"
+                        className="w-full bg-black/40 border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-400 uppercase mb-2">
+                        Rôle / Titre
+                      </label>
+                      <input
+                        type="text"
+                        value={teamRole}
+                        onChange={(e) => setTeamRole(e.target.value)}
+                        placeholder="Ex: CEO & Founder"
+                        className="w-full bg-black/40 border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-blue-500"
+                      />
+                    </div>
+                  </div>
+                  <button
+                    type="submit"
+                    disabled={uploadLoading}
+                    className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-700 text-white px-6 py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-blue-600/10 transition"
+                  >
+                    {uploadLoading ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
+                    Ajouter le Membre
+                  </button>
+                </form>
+              </div>
+
+              <div className="bg-gray-950/40 border border-gray-900 p-6 rounded-2xl space-y-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-bold text-white uppercase tracking-wider">Équipe ({team.length})</h3>
+                  {team.length > 1 && (
+                    <button
+                      onClick={() => handleSaveOrder(team, "team")}
+                      disabled={reorderLoading}
+                      className="flex items-center gap-1.5 bg-emerald-600/20 hover:bg-emerald-600/40 border border-emerald-600/30 text-emerald-400 px-3 py-1.5 rounded-lg text-xs font-semibold transition"
+                    >
+                      {reorderLoading ? <Loader2 size={12} className="animate-spin" /> : <Save size={12} />}
+                      Sauvegarder l'ordre
+                    </button>
+                  )}
+                </div>
+                {dataLoading ? (
+                  <div className="flex justify-center py-12">
+                    <Loader2 className="animate-spin text-blue-500" size={32} />
+                  </div>
+                ) : team.length === 0 ? (
+                  <div className="text-center py-12 bg-gray-950/20 border border-gray-900 rounded-2xl text-gray-500 text-sm">
+                    Aucun membre de l'équipe configuré.
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-3">
+                    {team.map((t, idx) => (
+                      <div
+                        key={t.id}
+                        className="bg-gray-950/30 border border-gray-900 rounded-2xl overflow-hidden flex items-center gap-4 p-2 group"
+                      >
+                        <div className="flex flex-col gap-1 flex-shrink-0">
+                          <button
+                            onClick={() => setTeam((prev) => handleMoveItem(prev, t.id, "up"))}
+                            disabled={idx === 0}
+                            className="p-1 rounded-lg bg-gray-800/60 hover:bg-blue-700/60 disabled:opacity-20 text-white transition"
+                          >
+                            <ChevronUp size={14} />
+                          </button>
+                          <GripVertical size={14} className="text-gray-600 mx-auto" />
+                          <button
+                            onClick={() => setTeam((prev) => handleMoveItem(prev, t.id, "down"))}
+                            disabled={idx === team.length - 1}
+                            className="p-1 rounded-lg bg-gray-800/60 hover:bg-blue-700/60 disabled:opacity-20 text-white transition"
+                          >
+                            <ChevronDown size={14} />
+                          </button>
+                        </div>
+                        <span className="text-xs font-bold text-gray-500 w-5 text-center flex-shrink-0">{idx + 1}</span>
+                        <div className="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-black">
+                          <img src={t.img || t.image} alt={t.name} className="w-full h-full object-cover object-top" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-bold text-white text-sm truncate">{t.name}</h4>
+                          <p className="text-xs text-gray-400 truncate">{t.role}</p>
+                        </div>
+                        <button
+                          onClick={() => handleDelete(t.id, "image")}
+                          className="flex-shrink-0 bg-red-600/80 hover:bg-red-600 p-2 rounded-lg text-white transition shadow-lg"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
         </main>
       </div>
     </div>

@@ -15,7 +15,7 @@ export async function POST(request: Request) {
   try {
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
-    const section = formData.get("section") as string; // 'slider' | 'photo' | 'film' | 'hero'
+    const section = formData.get("section") as string; // 'slider' | 'photo' | 'film' | 'hero' | 'service' | 'team'
 
     if (!file) {
       return NextResponse.json(
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!section || !["slider", "photo", "film", "hero"].includes(section)) {
+    if (!section || !["slider", "photo", "film", "hero", "service", "team"].includes(section)) {
       return NextResponse.json(
         { success: false, error: "Section cible invalide." },
         { status: 400 }
@@ -52,6 +52,13 @@ export async function POST(request: Request) {
       context.subline = (formData.get("subline") as string) || "";
       context.detail = (formData.get("detail") as string) || "";
       context.accent = (formData.get("accent") as string) || "#7dd3fc";
+    } else if (section === "service") {
+      context.title = (formData.get("title") as string) || "Service";
+      context.slug = (formData.get("slug") as string) || "/services";
+    } else if (section === "team") {
+      context.name = (formData.get("name") as string) || "Membre";
+      context.role = (formData.get("role") as string) || "Rôle";
+      context.title = context.role;
     } else if (section === "photo") {
       const albumTitle = (formData.get("albumTitle") as string) || "Album sans titre";
       const cleanId = albumTitle

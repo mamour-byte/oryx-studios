@@ -25,7 +25,7 @@ const services = [
     icon: PenTool,
   },
   {
-    title: "Marketing Digital & Web",
+    title: "Dev. Web & Marketing Digital",
     description: "Stratégies numériques pour une visibilité optimale.",
     icon: Globe,
   },

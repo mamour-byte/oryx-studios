@@ -5,6 +5,7 @@ import Link from "next/link";
 
 interface Slide {
   img: string;
+  image?: string;
   title: string;
   slug: string;
 }
@@ -12,7 +13,7 @@ interface Slide {
 const NAV_HEIGHT = 80;
 const SWIPE_THRESHOLD = 50;
 
-const slides: Slide[] = [
+const DEFAULT_SLIDES: Slide[] = [
   {
     img: "./assets/s1.jpg",
     title: "PHOTOGRAPHIE",
@@ -51,6 +52,8 @@ export default function Slider() {
 
   const [pos, setPos] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [slides, setSlides] = useState<Slide[]>(DEFAULT_SLIDES);
+  const [dataLoading, setDataLoading] = useState(false);
 
   const [overlay, setOverlay] = useState<{
     active: boolean;
@@ -59,6 +62,30 @@ export default function Slider() {
     active: false,
     slide: null,
   });
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        setDataLoading(true);
+        const res = await fetch("/api/media");
+        const data = await res.json();
+        if (data.success && Array.isArray(data.services) && data.services.length > 0) {
+          const mapped: Slide[] = data.services.map((s: any) => ({
+            img: s.image || s.img || DEFAULT_SLIDES[0].img,
+            image: s.image || s.img,
+            title: s.title || "Service",
+            slug: s.slug || "/services",
+          }));
+          setSlides(mapped);
+        }
+      } catch (err) {
+        console.error("Error fetching services:", err);
+      } finally {
+        setDataLoading(false);
+      }
+    };
+    fetchServices();
+  }, []);
 
   /* ======================
      RESPONSIVE

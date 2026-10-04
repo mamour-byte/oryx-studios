@@ -121,15 +121,15 @@ import React from "react";
  */
 
 const DEFAULT_TEAM = [
-  { name: "Daouda Tine", img: "/assets/daouda.jpg" },
-  { name: "Mor Diaw", img: "/assets/mordiaw.jpg" },
-  { name: "Mamour Fall", img: "/assets/Mamour.jpg" },
-  { name: "Ousmane Sy", img: "/assets/ousmane.jpg" },
-  { name: "Daouda", img: "/assets/dev2.jpg" },
-  { name: "André Dubois", img: "/assets/andre_dubois.jpg" },
-  { name: "Samuel Petit", img: "/assets/samuel_petit.jpg" },
-  { name: "Aissatou Ndiaye", img: "/assets/aissatou_ndiaye.jpg" },
-  { name: "Fatou Diop", img: "/assets/fatou_diop.jpg" },
+  { name: "Daouda Tine", img: "/assets/daouda.jpg", role: "CEO & Founder" },
+  { name: "Mor Diaw", img: "/assets/mordiaw.jpg", role: "Photographe & Cadreur" },
+  { name: "Mamour Fall", img: "/assets/Mamour.jpg", role: "Dev Web & Marketing" },
+  { name: "Ousmane Sy", img: "/assets/ousmane.jpg", role: "Production" },
+  { name: "Daouda", img: "/assets/dev2.jpg", role: "Équipe" },
+  { name: "Khady", img: "/assets/khady.jpeg", role: "Project Manager & Data Analyst" },
+  { name: "Mouhamed Diawara", img: "/assets/samuel_petit.jpg", role: "Stagiaire Production" },
+  { name: "Aissatou Ndiaye", img: "/assets/aissatou_ndiaye.jpg", role: "Équipe" },
+  { name: "Fatou Diop", img: "/assets/fatou_diop.jpg", role: "Équipe" },
 ];
 
 const DEFAULT_SKILLS = [
@@ -143,9 +143,36 @@ const DEFAULT_SKILLS = [
 export default function Team({
   eyebrow = "Notre équipe",
   heading = "Nous vous aidons à créer des stratégies visuelles.",
-  team = DEFAULT_TEAM,
+  team: initialTeam = DEFAULT_TEAM,
   skills = DEFAULT_SKILLS,
+}: {
+  eyebrow?: string;
+  heading?: string;
+  team?: Array<{ name: string; img: string; role?: string }>;
+  skills?: Array<{ label: string; value: number }>;
 }) {
+  const [team, setTeam] = React.useState(initialTeam);
+
+  React.useEffect(() => {
+    const fetchTeam = async () => {
+      try {
+        const res = await fetch("/api/media");
+        const data = await res.json();
+        if (data.success && Array.isArray(data.team) && data.team.length > 0) {
+          const mapped = data.team.map((t: any) => ({
+            name: t.name || "Membre",
+            img: t.img || t.image || DEFAULT_TEAM[0].img,
+            role: t.role || "",
+          }));
+          setTeam(mapped);
+        }
+      } catch (err) {
+        console.error("Error fetching team:", err);
+      }
+    };
+    fetchTeam();
+  }, []);
+
   const topRow = team.slice(0, 4);
   const bottomRow = team.slice(4, 9);
 

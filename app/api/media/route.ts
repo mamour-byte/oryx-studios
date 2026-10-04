@@ -25,7 +25,7 @@ export async function GET() {
   try {
     // Search for all resources with our app's specific tags
     const result = await cloudinary.search
-      .expression("tags:oryx-slider OR tags:oryx-photo OR tags:oryx-film")
+      .expression("tags:oryx-slider OR tags:oryx-photo OR tags:oryx-film OR tags:oryx-service OR tags:oryx-team")
       .with_field("context")
       .with_field("tags")
       .sort_by("created_at", "desc")
@@ -36,6 +36,8 @@ export async function GET() {
 
     const slider: any[] = [];
     const films: any[] = [];
+    const services: any[] = [];
+    const team: any[] = [];
     const albumsMap: Record<string, {
       id: string;
       title: string;
@@ -148,6 +150,36 @@ export async function GET() {
           albumsMap[albumId].blur = blurUrl(photoUrl);
         }
       }
+
+      // 4. Process Services (slider section on services page)
+      if (tags.includes("oryx-service")) {
+        const imgUrl = item.resource_type === "image" ? item.secure_url : undefined;
+        services.push({
+          id: item.public_id,
+          image: imgUrl ? optimizeUrl(imgUrl, 1920, 80) : undefined,
+          img: imgUrl ? imgUrl : undefined,
+          blur: imgUrl ? blurUrl(imgUrl) : undefined,
+          title: context.title || context.headline || "Service",
+          slug: context.slug || context.link || "/services",
+          order: context.order !== undefined ? Number(context.order) : undefined,
+          createdAt: item.created_at,
+        });
+      }
+
+      // 5. Process Team members
+      if (tags.includes("oryx-team")) {
+        const imgUrl = item.resource_type === "image" ? item.secure_url : undefined;
+        team.push({
+          id: item.public_id,
+          name: context.name || "Membre",
+          role: context.role || context.title || "Rôle",
+          img: imgUrl ? optimizeUrl(imgUrl, 600) : undefined,
+          image: imgUrl ? imgUrl : undefined,
+          blur: imgUrl ? blurUrl(imgUrl) : undefined,
+          order: context.order !== undefined ? Number(context.order) : undefined,
+          createdAt: item.created_at,
+        });
+      }
     });
 
     // Sort by explicit 'order' field first (if set via admin reorder), then by created_at as fallback
@@ -160,6 +192,8 @@ export async function GET() {
 
     slider.sort(sortByOrder);
     films.sort(sortByOrder);
+    services.sort(sortByOrder);
+    team.sort(sortByOrder);
     const albums = Object.values(albumsMap).sort(sortByOrder);
 
     return NextResponse.json({
@@ -167,6 +201,8 @@ export async function GET() {
       slider,
       films,
       albums,
+      services,
+      team,
     });
   } catch (error: any) {
     console.error("Error fetching media from Cloudinary:", error);
@@ -177,6 +213,8 @@ export async function GET() {
         slider: [],
         films: [],
         albums: [],
+        services: [],
+        team: [],
       },
       { status: 500 }
     );
