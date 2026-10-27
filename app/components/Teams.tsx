@@ -250,13 +250,14 @@ export default function Team({
           width: 100%;
           height: 100%;
           object-fit: cover;
+          object-position: top;
           display: block;
           filter: grayscale(8%);
-          transition: transform 0.4s ease, filter 0.4s ease;
+          transition: transform 700ms ease-out, filter 0.4s ease;
         }
 
         .ts-photo:hover img {
-          transform: scale(1.04);
+          transform: scale(1.05);
           filter: grayscale(0%);
         }
 
@@ -266,10 +267,54 @@ export default function Team({
           inset: 0;
           background: linear-gradient(
             180deg,
-            transparent 60%,
-            rgba(23, 23, 23, 0.35) 100%
+            rgba(15, 23, 42, 0) 0%,
+            rgba(29, 78, 216, 0.9) 55%,
+            rgba(37, 99, 235, 0.95) 100%
           );
+          opacity: 0;
+          transition: opacity 400ms ease;
           pointer-events: none;
+        }
+
+        .ts-photo:hover::after {
+          opacity: 1;
+        }
+
+        .ts-photo-info {
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          padding: 18px 16px;
+          color: #ffffff;
+          transform: translateY(12px);
+          opacity: 0;
+          transition: transform 400ms ease, opacity 400ms ease;
+          z-index: 1;
+          pointer-events: none;
+        }
+
+        .ts-photo:hover .ts-photo-info {
+          transform: translateY(0);
+          opacity: 1;
+        }
+
+        .ts-photo-name {
+          margin: 0;
+          font-size: 14px;
+          font-weight: 600;
+          letter-spacing: -0.01em;
+        }
+
+        .ts-photo-role {
+          margin: 0;
+          font-size: 11px;
+          text-transform: uppercase;
+          letter-spacing: 0.12em;
+          opacity: 0.9;
         }
 
         .ts-top-photo-1 { grid-column: 2 / 3; grid-row: 1 / 2; }
@@ -384,6 +429,10 @@ export default function Team({
         {topRow.map((member, i) => (
           <div className={`ts-photo ts-top-photo-${i + 1}`} key={member.name + i}>
             <img src={member.img} alt={member.name} loading="lazy" />
+            <div className="ts-photo-info">
+              <p className="ts-photo-name">{member.name}</p>
+              {member.role && <p className="ts-photo-role">{member.role}</p>}
+            </div>
           </div>
         ))}
 
@@ -392,6 +441,10 @@ export default function Team({
           {bottomRow.map((member, i) => (
             <div className="ts-photo" key={member.name + i}>
               <img src={member.img} alt={member.name} loading="lazy" />
+              <div className="ts-photo-info">
+                <p className="ts-photo-name">{member.name}</p>
+                {member.role && <p className="ts-photo-role">{member.role}</p>}
+              </div>
             </div>
           ))}
         </div>

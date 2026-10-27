@@ -29,19 +29,38 @@ export async function POST(request: Request) {
       );
     }
 
+    const mailUserPro = process.env.MAIL_USER_PRO || mailUser;
+    const mailPassPro = process.env.MAIL_PASSWORD_PRO || mailPass;
+    const mailTo = process.env.MAIL_TO || "contact@oryx-studios.com";
+    const mailFrom = process.env.MAIL_FROM || mailUserPro;
+
+    if (!mailUserPro || !mailPassPro) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "La configuration SMTP du site est incomplète. Vérifiez MAIL_USER_PRO / MAIL_PASSWORD_PRO.",
+        },
+        { status: 500 }
+      );
+    }
+
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
+      host: process.env.MAIL_HOST || "mail93.lwspanel.com",
+      port: Number(process.env.MAIL_PORT) || 587,
+      secure: false,
+      requireTLS: true,
       auth: {
-        user: mailUser,
-        pass: mailPass,
+        user: mailUserPro,
+        pass: mailPassPro,
+      },
+      tls: {
+        rejectUnauthorized: true,
       },
     });
 
     const mailOptions = {
-      from: `"Oryx Studios" <${mailUser}>`,
-      to: "contact@oryx-studios.com",
+      from: `"Oryx Studios" <${mailFrom}>`,
+      to: mailTo,
       replyTo: email,
       subject: `Nouvelle demande de devis - ${service}`,
       html: `
